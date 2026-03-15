@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>北京奢華散策 - 個人旅行手冊</title>
+    <title>北京奢華散策 - 個人旅行手冊 (維修對齊)</title>
     <style>
         :root {
             --bg-color: #F9F7F2;
@@ -11,6 +11,8 @@
             --accent-green: #7D8E7E;
             --line-color: #D1CEC7;
             --info-text: #999;
+            /* 定義一個固定的線條/圓點寬度，方便後續對齊 */
+            --timeline-track-width: 40px; 
         }
 
         body {
@@ -20,6 +22,7 @@
             margin: 0;
             padding: 20px;
             line-height: 1.6;
+            overflow-x: hidden; /* 防止內容溢出 */
         }
 
         .container {
@@ -28,6 +31,7 @@
             background: #fff;
             padding: 50px 40px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            box-sizing: border-box; /* 確保 padding 不影響寬度 */
         }
 
         header {
@@ -65,37 +69,64 @@
             letter-spacing: 2px;
         }
 
-        /* 調整後的時間軸結構 */
+        /* ==================== 修正核心：時間軸對齊 ==================== */
+
         .itinerary-item {
-            display: flex;
+            display: flex; /* 使用 flex 佈局 */
             margin-bottom: 25px;
             position: relative;
+            align-items: flex-start; /* 文字與點的頂部對齊 */
         }
 
-        /* 移除時間寬度，點往左靠 */
-        .timeline-dot-wrapper {
-            width: 30px; 
+        /* 1. 給圓點和線一個專用的容器，並固定其寬度 */
+        .timeline-track {
+            width: var(--timeline-track-width);
             display: flex;
-            justify-content: center;
+            justify-content: center; /* 圓點居中 */
             position: relative;
+            flex-shrink: 0; /* 防止容器被文字擠壓 */
+            padding-top: 10px; /* 控制圓點上方的垂直位置 */
         }
 
+        /* 2. 圓點本身不再包含線，只是一個點 */
         .dot {
             width: 7px;
             height: 7px;
             background-color: var(--accent-green);
             border-radius: 50%;
-            margin-top: 10px;
-            z-index: 2;
+            z-index: 2; /* 確保點在線上 */
+            position: relative; /* 需要設定 position 才能使用 z-index */
         }
 
+        /* 3. 使用偽元素 (after) 在 .timeline-track 下方生成一條垂直線 */
+        .timeline-track::after {
+            content: '';
+            position: absolute;
+            top: 10px; /* 垂直線的頂部位置，與圓點同高或稍低 */
+            left: 50%; /* 線條位於容器中線 */
+            transform: translateX(-50%); /* 精確居中 */
+            width: 1px; /* 線條寬度 */
+            background-color: var(--line-color);
+            /* 計算線條的高度，使其向下延伸。 */
+            /* 我們增加一個較大的值，例如 35px，讓線條能延伸到下一個行程上方 */
+            height: 35px; 
+            z-index: 1; /* 確保線在點下 */
+        }
+
+        /* 4. 如果是當天的最後一個項目，我們手動將線條縮短，不讓它溢出 */
+        .itinerary-item:last-child .timeline-track::after {
+            height: 0;
+            /* 或者你可以完全不縮短，讓線條自然連接到下一個日期區塊 */
+        }
+
+
+        /* 5. 行程內容文字 */
         .content {
             flex: 1;
-            padding-left: 15px;
-            padding-bottom: 15px;
-            border-left: 1px solid var(--line-color);
-            margin-left: -19px; /* 讓線條與圓點對齊 */
+            padding-left: 10px; /* 文字與圓點的水平間距 */
         }
+
+        /* ==================== 修正核心結束 ==================== */
 
         .event-title {
             font-size: 1.05rem;
@@ -131,18 +162,18 @@
     <div class="day-section">
         <div class="day-header">04.30</div>
         <div class="itinerary-item">
-            <div class="timeline-dot-wrapper"><div class="dot"></div></div>
+            <div class="timeline-track"><div class="dot"></div></div>
             <div class="content"><div class="event-title">JW Marriott Hotel Check In</div></div>
         </div>
         <div class="itinerary-item">
-            <div class="timeline-dot-wrapper"><div class="dot"></div></div>
+            <div class="timeline-track"><div class="dot"></div></div>
             <div class="content">
                 <div class="event-title">天壇公園</div>
                 <span class="event-info">⏰ 營業時間：旺季 06:00 - 22:00</span>
             </div>
         </div>
         <div class="itinerary-item">
-            <div class="timeline-dot-wrapper"><div class="dot"></div></div>
+            <div class="timeline-track"><div class="dot"></div></div>
             <div class="content">
                 <div class="event-title">前門大街</div>
                 <span class="event-info">⏰ 營業時間：約 08:00 - 22:00 (各店舖不同)</span>
@@ -153,11 +184,11 @@
     <div class="day-section">
         <div class="day-header">05.01</div>
         <div class="itinerary-item">
-            <div class="timeline-dot-wrapper"><div class="dot"></div></div>
+            <div class="timeline-track"><div class="dot"></div></div>
             <div class="content"><div class="event-title">酒店早餐 & 泳池放鬆</div></div>
         </div>
         <div class="itinerary-item">
-            <div class="timeline-dot-wrapper"><div class="dot"></div></div>
+            <div class="timeline-track"><div class="dot"></div></div>
             <div class="content">
                 <div class="event-title">紫禁城 (故宮博物院)</div>
                 <span class="event-info">⏰ 營業時間：08:30 - 17:00 (16:00 停止檢票)</span>
@@ -165,85 +196,8 @@
             </div>
         </div>
         <div class="itinerary-item">
-            <div class="timeline-dot-wrapper"><div class="dot"></div></div>
+            <div class="timeline-track"><div class="dot"></div></div>
             <div class="content"><div class="event-title">酒店 Happy Hour</div></div>
-        </div>
-    </div>
-
-    <div class="day-section">
-        <div class="day-header">05.02</div>
-        <div class="itinerary-item">
-            <div class="timeline-dot-wrapper"><div class="dot"></div></div>
-            <div class="content"><div class="event-title">InterContinental Check In</div></div>
-        </div>
-        <div class="itinerary-item">
-            <div class="timeline-dot-wrapper"><div class="dot"></div></div>
-            <div class="content"><div class="event-title">酒店下午茶 (14:30 - 16:30)</div></div>
-        </div>
-        <div class="itinerary-item">
-            <div class="timeline-dot-wrapper"><div class="dot"></div></div>
-            <div class="content">
-                <div class="event-title">恭王府</div>
-                <span class="event-info">⏰ 營業時間：旺季 08:00 - 17:00</span>
-            </div>
-        </div>
-        <div class="itinerary-item">
-            <div class="timeline-dot-wrapper"><div class="dot"></div></div>
-            <div class="content"><div class="event-title">酒店 HH & 三里屯太古里</div></div>
-        </div>
-        <div class="itinerary-item">
-            <div class="timeline-dot-wrapper"><div class="dot"></div></div>
-            <div class="content"><div class="event-title">Destination Club</div></div>
-        </div>
-    </div>
-
-    <div class="day-section">
-        <div class="day-header">05.03</div>
-        <div class="itinerary-item">
-            <div class="timeline-dot-wrapper"><div class="dot"></div></div>
-            <div class="content"><div class="event-title">酒店早餐 & 泳池</div></div>
-        </div>
-        <div class="itinerary-item">
-            <div class="timeline-dot-wrapper"><div class="dot"></div></div>
-            <div class="content"><div class="event-title">酒店下午茶 (14:30 - 16:30)</div></div>
-        </div>
-        <div class="itinerary-item">
-            <div class="timeline-dot-wrapper"><div class="dot"></div></div>
-            <div class="content">
-                <div class="event-title">什剎海 · 銀錠橋 · 煙袋斜街</div>
-                <span class="event-info">⏰ 營業時間：煙袋斜街 24 小時 / 什剎海全天開放</span>
-            </div>
-        </div>
-        <div class="itinerary-item">
-            <div class="timeline-dot-wrapper"><div class="dot"></div></div>
-            <div class="content"><div class="event-title">酒店 Happy Hour (18:00 - 20:00)</div></div>
-        </div>
-    </div>
-
-    <div class="day-section">
-        <div class="day-header">05.04</div>
-        <div class="itinerary-item">
-            <div class="timeline-dot-wrapper"><div class="dot"></div></div>
-            <div class="content">
-                <div class="event-title">頤和園</div>
-                <span class="event-info">⏰ 營業時間：旺季 06:00 - 20:00</span>
-            </div>
-        </div>
-        <div class="itinerary-item">
-            <div class="timeline-dot-wrapper"><div class="dot"></div></div>
-            <div class="content"><div class="event-title">酒店下午茶 & Happy Hour</div></div>
-        </div>
-    </div>
-
-    <div class="day-section">
-        <div class="day-header">05.05</div>
-        <div class="itinerary-item">
-            <div class="timeline-dot-wrapper"><div class="dot"></div></div>
-            <div class="content"><div class="event-title">酒店早餐</div></div>
-        </div>
-        <div class="itinerary-item">
-            <div class="timeline-dot-wrapper"><div class="dot"></div></div>
-            <div class="content"><div class="event-title">PEK 首都國際機場</div></div>
         </div>
     </div>
 
