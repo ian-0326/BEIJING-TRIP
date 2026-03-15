@@ -29,7 +29,7 @@
         .container { width: 100%; background: #fff; padding: 0; }
 
         header { text-align: center; padding: 40px 30px 20px 30px; }
-        h1 { font-size: 2.2rem; letter-spacing: 8px; margin: 10px 0; font-weight: 300; }
+        h1 { font-size: 1.8rem; letter-spacing: 8px; margin: 10px 0; font-weight: 300; } /* 標題縮小 */
         .subtitle { text-transform: uppercase; font-size: 0.8rem; letter-spacing: 3px; color: var(--accent-green); }
         .header-banner { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; display: block; }
 
@@ -59,7 +59,7 @@
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.6);
-            display: none; /* 預設隱藏 */
+            display: none;
             justify-content: center;
             align-items: center;
             z-index: 1000;
@@ -131,7 +131,7 @@
         .map-btn { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; background-color: var(--accent-green); border-radius: 50%; flex-shrink: 0; text-decoration: none; }
         .map-icon { width: 14px; height: 14px; fill: white; }
 
-        .event-info { font-size: 0.9rem; color: var(--info-text); display: block; line-height: 1.4; }
+        .event-info { font-size: 0.85rem; color: var(--info-text); display: block; line-height: 1.4; margin-bottom: 5px; }
         .event-photo { width: 100%; max-width: 800px; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 4px; margin: 10px 0; background-color: #eee; cursor: pointer; }
 
         footer { text-align: center; font-size: 0.8rem; color: #CCC; padding: 60px 30px; letter-spacing: 2px; background-color: #fcfbf8; }
@@ -205,6 +205,7 @@
                         <span class="event-text" data-zh="前門大街" data-ko="전문대가 (치엔먼다지에)">前門大街</span>
                         <a href="https://surl.amap.com/2neRbJY1laZ5" target="_blank" class="map-btn" onclick="event.stopPropagation()"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
                     </div>
+                    <span class="event-info" data-zh="營業時間：約 08:00 - 22:00" data-ko="영업시간: 약 08:00 - 22:00">營業時間：約 08:00 - 22:00</span>
                     <img src="前門大街.jpg" class="event-photo" onclick="showTip('QM', '前門')">
                 </div>
             </div>
@@ -215,7 +216,13 @@
         <div class="day-header">05.01</div>
         <div class="itinerary-list">
             <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title" data-zh="早餐" data-ko="조식">早餐</div></div></div>
-            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title" data-zh="泳池＆SPA" data-ko="수영장 & SPA">泳池＆SPA</div><img src="JW泳池.jpg" class="event-photo"></div></div>
+            <div class="itinerary-item">
+                <div class="dot-container"><div class="dot"></div></div>
+                <div class="content">
+                    <div class="event-title" data-zh="泳池＆SPA" data-ko="수영장 & SPA">泳池＆SPA</div>
+                    <img src="JW泳池.jpg" class="event-photo">
+                </div>
+            </div>
             <div class="itinerary-item">
                 <div class="dot-container"><div class="dot"></div></div>
                 <div class="content">
@@ -223,10 +230,18 @@
                         <span class="event-text" data-zh="紫禁城 (故宮博物院)" data-ko="자금성 (고궁박물원)">紫禁城 (故宮博物院)</span>
                         <a href="https://surl.amap.com/h2Vgp70x61E" target="_blank" class="map-btn" onclick="event.stopPropagation()"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
                     </div>
+                    <span class="event-info" data-zh="營業時間：08:30 - 17:00 (週一閉館)" data-ko="영업시간: 08:30 - 17:00 (월요일 휴관)">營業時間：08:30 - 17:00 (週一閉館)</span>
                     <img src="北京故宮紫禁城.jpg" class="event-photo" onclick="showTip('GUGONG', '故宮')">
                 </div>
             </div>
-            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title" data-zh="Happy Hour" data-ko="해피아워 (Happy Hour)">Happy Hour</div><img src="JW行政酒廊.jpg" class="event-photo"></div></div>
+            <div class="itinerary-item">
+                <div class="dot-container"><div class="dot"></div></div>
+                <div class="content">
+                    <div class="event-title" data-zh="Happy Hour" data-ko="해피아워 (Happy Hour)">Happy Hour</div>
+                    <span class="event-info" data-zh="營業時間：17:30 - 19:30" data-ko="영업시간: 17:30 - 19:30">營業時間：17:30 - 19:30</span>
+                    <img src="JW行政酒廊.jpg" class="event-photo">
+                </div>
+            </div>
         </div>
     </div>
 
@@ -244,20 +259,56 @@
                     <img src="三里屯洲際.jpg" class="event-photo" onclick="showTip('IC', 'InterContinental')">
                 </div>
             </div>
-            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title" data-zh="下午茶時光" data-ko="애프터눈 티 타임">下午茶時光</div><img src="洲際行政酒廊.jpg" class="event-photo"></div></div>
-            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title" onclick="showTip('GWF', '恭王府')">
-                <span class="event-text" data-zh="恭王府" data-ko="공왕부 (궁왕푸)">恭王府</span>
-                <a href="https://surl.amap.com/aQiylpM1d6v6" target="_blank" class="map-btn" onclick="event.stopPropagation()"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
-            </div><img src="恭王府.jpg" class="event-photo" onclick="showTip('GWF', '恭王府')"></div></div>
-            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title" data-zh="Happy Hour" data-ko="해피아워 (Happy Hour)">Happy Hour</div><img src="洲際行政酒廊.jpg" class="event-photo"></div></div>
-            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title" onclick="showTip('SLT', '三里屯')">
-                <span class="event-text" data-zh="三里屯太古里" data-ko="산리툰 타이쿠리">三里屯太古里</span>
-                <a href="https://surl.amap.com/1EkfizYsfSM" target="_blank" class="map-btn" onclick="event.stopPropagation()"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
-            </div><img src="三里屯步行街.jpg" class="event-photo" onclick="showTip('SLT', '三里屯')"></div></div>
-            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title" onclick="showTip('DEST', 'Destination')">
-                <span class="event-text" data-zh="Destination Club" data-ko="데스티네이션 클럽">Destination Club</span>
-                <a href="https://surl.amap.com/1VpInpoHgRX" target="_blank" class="map-btn" onclick="event.stopPropagation()"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
-            </div><img src="Destination Club.jpg" class="event-photo" onclick="showTip('DEST', 'Destination')"></div></div>
+            <div class="itinerary-item">
+                <div class="dot-container"><div class="dot"></div></div>
+                <div class="content">
+                    <div class="event-title" data-zh="下午茶時光" data-ko="애프터눈 티 타임">下午茶時光</div>
+                    <span class="event-info" data-zh="營業時間：14:30 - 16:30" data-ko="영업시간: 14:30 - 16:30">營業時間：14:30 - 16:30</span>
+                    <img src="洲際行政酒廊.jpg" class="event-photo">
+                </div>
+            </div>
+            <div class="itinerary-item">
+                <div class="dot-container"><div class="dot"></div></div>
+                <div class="content">
+                    <div class="event-title" onclick="showTip('GWF', '恭王府')">
+                        <span class="event-text" data-zh="恭王府" data-ko="공왕부 (궁왕푸)">恭王府</span>
+                        <a href="https://surl.amap.com/aQiylpM1d6v6" target="_blank" class="map-btn" onclick="event.stopPropagation()"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
+                    </div>
+                    <span class="event-info" data-zh="營業時間：旺季 08:00 - 17:00" data-ko="영업시간: 성수기 08:00 - 17:00">營業時間：旺季 08:00 - 17:00</span>
+                    <img src="恭王府.jpg" class="event-photo" onclick="showTip('GWF', '恭王府')">
+                </div>
+            </div>
+            <div class="itinerary-item">
+                <div class="dot-container"><div class="dot"></div></div>
+                <div class="content">
+                    <div class="event-title" data-zh="Happy Hour" data-ko="해피아워 (Happy Hour)">Happy Hour</div>
+                    <span class="event-info" data-zh="營業時間：18:00 - 20:00" data-ko="영업시간: 18:00 - 20:00">營業時間：18:00 - 20:00</span>
+                    <img src="洲際行政酒廊.jpg" class="event-photo">
+                </div>
+            </div>
+            <div class="itinerary-item">
+                <div class="dot-container"><div class="dot"></div></div>
+                <div class="content">
+                    <div class="event-title" onclick="showTip('SLT', '三里屯')">
+                        <span class="event-text" data-zh="三里屯太古里" data-ko="산리툰 타이쿠리">三里屯太古里</span>
+                        <a href="https://surl.amap.com/1EkfizYsfSM" target="_blank" class="map-btn" onclick="event.stopPropagation()"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
+                    </div>
+                    <span class="event-info" data-zh="營業時間：10:00 - 22:00" data-ko="영업시간: 10:00 - 22:00">營業時間：10:00 - 22:00</span>
+                    <span class="event-info" data-zh="備註：三里屯酒吧街 22:00 後仍會營業" data-ko="비고: 산리툰 바 거리는 22:00 이후에도 영업합니다.">備註：三里屯酒吧街 22:00 後仍會營業</span>
+                    <img src="三里屯步行街.jpg" class="event-photo" onclick="showTip('SLT', '三里屯')">
+                </div>
+            </div>
+            <div class="itinerary-item">
+                <div class="dot-container"><div class="dot"></div></div>
+                <div class="content">
+                    <div class="event-title" onclick="showTip('DEST', 'Destination')">
+                        <span class="event-text" data-zh="Destination Club" data-ko="데스티네이션 클럽">Destination Club</span>
+                        <a href="https://surl.amap.com/1VpInpoHgRX" target="_blank" class="map-btn" onclick="event.stopPropagation()"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
+                    </div>
+                    <span class="event-info" data-zh="五六：21:00-05:00 / 日至四：21:00-03:00" data-ko="금토: 21:00-05:00 / 일-목: 21:00-03:00">五六：21:00-05:00 / 日至四：21:00-03:00</span>
+                    <img src="Destination Club.jpg" class="event-photo" onclick="showTip('DEST', 'Destination')">
+                </div>
+            </div>
         </div>
     </div>
 
@@ -266,16 +317,44 @@
         <div class="itinerary-list">
             <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title" data-zh="早餐" data-ko="조식">早餐</div></div></div>
             <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title" data-zh="泳池＆SPA" data-ko="수영장 & SPA">泳池＆SPA</div><img src="洲際泳池.jpg" class="event-photo"></div></div>
-            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title" data-zh="下午茶時光" data-ko="애프터눈 티 타임">下午茶時光</div><img src="洲際行政酒廊.jpg" class="event-photo"></div></div>
-            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title" onclick="showTip('SCH', '什剎海')">
-                <span class="event-text" data-zh="什剎海 & 銀錠橋" data-ko="스차하이 & 은정교">什剎海 & 銀錠橋</span>
-                <a href="https://surl.amap.com/h3FIt6K1AdON" target="_blank" class="map-btn" onclick="event.stopPropagation()"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
-            </div><img src="什刹海（銀錠橋）.jpg" class="event-photo" onclick="showTip('SCH', '什剎海')"></div></div>
-            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title" onclick="showTip('YDXJ', '煙袋斜街')">
-                <span class="event-text" data-zh="煙袋斜街" data-ko="엔다이시에지에 (후통거리)">煙袋斜街</span>
-                <a href="https://surl.amap.com/EhOtLIO7Lx" target="_blank" class="map-btn" onclick="event.stopPropagation()"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
-            </div><img src="煙袋斜街.jpg" class="event-photo" onclick="showTip('YDXJ', '煙袋斜街')"></div></div>
-            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title" data-zh="Happy Hour" data-ko="해피아워 (Happy Hour)">Happy Hour</div><img src="洲際行政酒廊.jpg" class="event-photo"></div></div>
+            <div class="itinerary-item">
+                <div class="dot-container"><div class="dot"></div></div>
+                <div class="content">
+                    <div class="event-title" data-zh="下午茶時光" data-ko="애프터눈 티 타임">下午茶時光</div>
+                    <span class="event-info" data-zh="營業時間：14:30 - 16:30" data-ko="영업시간: 14:30 - 16:30">營業時間：14:30 - 16:30</span>
+                    <img src="洲際行政酒廊.jpg" class="event-photo">
+                </div>
+            </div>
+            <div class="itinerary-item">
+                <div class="dot-container"><div class="dot"></div></div>
+                <div class="content">
+                    <div class="event-title" onclick="showTip('SCH', '什剎海')">
+                        <span class="event-text" data-zh="什剎海 & 銀錠橋" data-ko="스차하이 & 은정교">什剎海 & 銀錠橋</span>
+                        <a href="https://surl.amap.com/h3FIt6K1AdON" target="_blank" class="map-btn" onclick="event.stopPropagation()"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
+                    </div>
+                    <span class="event-info" data-zh="營業時間：全天開放" data-ko="영업시간: 하루 종일">營業時間：全天開放</span>
+                    <img src="什刹海（銀錠橋）.jpg" class="event-photo" onclick="showTip('SCH', '什剎海')">
+                </div>
+            </div>
+            <div class="itinerary-item">
+                <div class="dot-container"><div class="dot"></div></div>
+                <div class="content">
+                    <div class="event-title" onclick="showTip('YDXJ', '煙袋斜街')">
+                        <span class="event-text" data-zh="煙袋斜街" data-ko="엔다이시에지에 (후통거리)">煙袋斜街</span>
+                        <a href="https://surl.amap.com/EhOtLIO7Lx" target="_blank" class="map-btn" onclick="event.stopPropagation()"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
+                    </div>
+                    <span class="event-info" data-zh="營業時間：24小時開放" data-ko="영업시간: 24시간">營業時間：24小時開放</span>
+                    <img src="煙袋斜街.jpg" class="event-photo" onclick="showTip('YDXJ', '煙袋斜街')">
+                </div>
+            </div>
+            <div class="itinerary-item">
+                <div class="dot-container"><div class="dot"></div></div>
+                <div class="content">
+                    <div class="event-title" data-zh="Happy Hour" data-ko="해피아워 (Happy Hour)">Happy Hour</div>
+                    <span class="event-info" data-zh="營業時間：18:00 - 20:00" data-ko="영업시간: 18:00 - 20:00">營業時間：18:00 - 20:00</span>
+                    <img src="洲際行政酒廊.jpg" class="event-photo">
+                </div>
+            </div>
         </div>
     </div>
 
@@ -283,16 +362,44 @@
         <div class="day-header">05.04</div>
         <div class="itinerary-list">
             <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title" data-zh="早餐" data-ko="조식">早餐</div></div></div>
-            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title" onclick="showTip('YHG', '雍和宮')">
-                <span class="event-text" data-zh="雍和宮" data-ko="옹화궁 (용허궁)">雍和宮</span>
-                <a href="https://surl.amap.com/4blqS661g2GX" target="_blank" class="map-btn" onclick="event.stopPropagation()"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
-            </div><img src="雍和宮.jpg" class="event-photo" onclick="showTip('YHG', '雍和宮')"></div></div>
-            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title" data-zh="下午茶時光" data-ko="애프터눈 티 타임">下午茶時光</div><img src="洲際行政酒廊.jpg" class="event-photo"></div></div>
-            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title" onclick="showTip('YHY', '頤和園')">
-                <span class="event-text" data-zh="頤和園" data-ko="이화원">頤和園</span>
-                <a href="https://surl.amap.com/6OR83WZt4LY" target="_blank" class="map-btn" onclick="event.stopPropagation()"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
-            </div><img src="頤和園.jpg" class="event-photo" onclick="showTip('YHY', '頤和園')"></div></div>
-            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title" data-zh="Happy Hour" data-ko="해피아워 (Happy Hour)">Happy Hour</div><img src="洲際行政酒廊.jpg" class="event-photo"></div></div>
+            <div class="itinerary-item">
+                <div class="dot-container"><div class="dot"></div></div>
+                <div class="content">
+                    <div class="event-title" onclick="showTip('YHG', '雍和宮')">
+                        <span class="event-text" data-zh="雍和宮" data-ko="옹화궁 (용허궁)">雍和宮</span>
+                        <a href="https://surl.amap.com/4blqS661g2GX" target="_blank" class="map-btn" onclick="event.stopPropagation()"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
+                    </div>
+                    <span class="event-info" data-zh="營業時間：09:00 - 16:30" data-ko="영업시간: 09:00 - 16:30">營業時間：09:00 - 16:30</span>
+                    <img src="雍和宮.jpg" class="event-photo" onclick="showTip('YHG', '雍和宮')">
+                </div>
+            </div>
+            <div class="itinerary-item">
+                <div class="dot-container"><div class="dot"></div></div>
+                <div class="content">
+                    <div class="event-title" data-zh="下午茶時光" data-ko="애프터눈 티 타임">下午茶時光</div>
+                    <span class="event-info" data-zh="營業時間：14:30 - 16:30" data-ko="영업시간: 14:30 - 16:30">營業時間：14:30 - 16:30</span>
+                    <img src="洲際行政酒廊.jpg" class="event-photo">
+                </div>
+            </div>
+            <div class="itinerary-item">
+                <div class="dot-container"><div class="dot"></div></div>
+                <div class="content">
+                    <div class="event-title" onclick="showTip('YHY', '頤和園')">
+                        <span class="event-text" data-zh="頤和園" data-ko="이화원">頤和園</span>
+                        <a href="https://surl.amap.com/6OR83WZt4LY" target="_blank" class="map-btn" onclick="event.stopPropagation()"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
+                    </div>
+                    <span class="event-info" data-zh="營業時間：旺季 06:00 - 20:00" data-ko="영업시간: 성수기 06:00 - 20:00">營業時間：旺季 06:00 - 20:00</span>
+                    <img src="頤和園.jpg" class="event-photo" onclick="showTip('YHY', '頤和園')">
+                </div>
+            </div>
+            <div class="itinerary-item">
+                <div class="dot-container"><div class="dot"></div></div>
+                <div class="content">
+                    <div class="event-title" data-zh="Happy Hour" data-ko="해피아워 (Happy Hour)">Happy Hour</div>
+                    <span class="event-info" data-zh="營業時間：18:00 - 20:00" data-ko="영업시간: 18:00 - 20:00">營業時間：18:00 - 20:00</span>
+                    <img src="洲際行政酒廊.jpg" class="event-photo">
+                </div>
+            </div>
         </div>
     </div>
 
@@ -308,7 +415,6 @@
 </div>
 
 <script>
-    // 備註提示資料庫
     const tips = {
         'JW': { zh: '地理位置優越，靠近地鐵。酒廊服務口碑極佳。', ko: '지하철역과 가까운 최적의 위치. 라운지 서비스가 매우 훌륭합니다.' },
         'TT': { zh: '建議早點去，避開旅行團。迴音壁目前不一定開放。', ko: '단체 관광객을 피하려면 아침 일찍 가는 것을 추천합니다.' },
@@ -324,7 +430,6 @@
         'YHY': { zh: '建議下午去，可以看昆明湖日落，景觀極其震撼。', ko: '늦은 오후에 가서 곤명호의 일몰을 보는 것을 추천합니다.' }
     };
 
-    // 語言切換
     let currentLang = 'zh';
     function toggleLanguage() {
         currentLang = currentLang === 'zh' ? 'ko' : 'zh';
@@ -334,7 +439,6 @@
         document.getElementById('langFlag').textContent = currentLang === 'zh' ? '🇰🇷' : '🇹🇼';
     }
 
-    // 彈窗功能
     function showTip(key, title) {
         const modal = document.getElementById('modalOverlay');
         document.getElementById('modalTitle').textContent = title;
@@ -342,11 +446,8 @@
         modal.style.display = 'flex';
     }
 
-    function closeModal() {
-        document.getElementById('modalOverlay').style.display = 'none';
-    }
+    function closeModal() { document.getElementById('modalOverlay').style.display = 'none'; }
 
-    // 捲動邏輯
     if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
     function scrollToDay(dayId) {
         const element = document.getElementById(dayId);
