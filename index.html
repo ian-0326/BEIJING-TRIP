@@ -23,25 +23,23 @@
             color: var(--main-text);
             font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
             margin: 0;
-            padding: 0; /* 移除 body 的 padding */
+            padding: 0;
             line-height: 1.6;
         }
 
         .container {
-            width: 100%; /* 全螢幕寬度 */
-            max-width: none; /* 取消最大寬度限制 */
+            width: 100%;
             background: #fff;
-            padding: 0; /* 移除 container 的預設 padding */
-            box-shadow: none; /* 移除 box-shadow，讓畫面更純淨 */
+            padding: 0;
         }
 
         header {
             text-align: center;
-            padding: 40px 30px; /* 為標題加入上下留白 */
+            padding: 40px 30px 20px 30px; /* 縮小底部間距 */
         }
 
         h1 {
-            font-size: 2.2rem; /* 標題稍微放大 */
+            font-size: 2.2rem;
             letter-spacing: 8px;
             margin: 10px 0;
             font-weight: 300;
@@ -54,28 +52,34 @@
             color: var(--accent-green);
         }
 
-        /* Banner 圖片樣式 */
+        /* Banner 圖片樣式 - 增加高度 */
         .header-banner {
             width: 100%;
             height: auto;
-            aspect-ratio: 21 / 9; /* 強制橫式 Banner 比例 */
-            object-fit: cover; /* 確保圖片填滿且不變形 */
-            display: block; /* 移除圖片下方的微小空隙 */
+            aspect-ratio: 16 / 7; /* 調整比例增加高度 */
+            object-fit: cover;
+            display: block;
         }
 
-        /* 導航按鈕樣式 - 修正間距與版面 */
+        /* 導航按鈕樣式 - 強制單排對齊 */
         .nav-bar {
             position: sticky;
             top: 0;
             background: rgba(255, 255, 255, 0.98);
-            padding: 20px 30px; /* 側邊加入 padding */
+            padding: 15px 20px;
             display: flex;
-            justify-content: center; /* 按鈕居中 */
-            flex-wrap: wrap; /* 支援多行，防止手機版擠壓 */
-            gap: 12px; /* 按鈕之間的間距 */
+            justify-content: center; 
+            flex-wrap: nowrap; /* 強制不換行 */
+            overflow-x: auto; /* 手機版可左右滑動 */
+            -webkit-overflow-scrolling: touch;
+            gap: 12px;
             z-index: 100;
             border-bottom: 1px solid var(--line-color);
-            margin-bottom: 0; /* 移除 margin-bottom，讓導航欄緊鄰第一個日期 */
+            scrollbar-width: none; /* 隱藏電腦版捲軸 */
+        }
+        
+        .nav-bar::-webkit-scrollbar {
+            display: none; /* 隱藏 Chrome/Safari 捲軸 */
         }
 
         .nav-btn {
@@ -87,7 +91,8 @@
             border: 1px solid var(--accent-green);
             border-radius: 20px;
             transition: all 0.3s;
-            white-space: nowrap; /* 防止按鈕文字折行 */
+            white-space: nowrap;
+            flex-shrink: 0; /* 防止按鈕被壓縮 */
         }
 
         .nav-btn:hover {
@@ -97,11 +102,9 @@
 
         /* 日期區塊 */
         .day-section {
-            padding: 60px 30px; /* 加入上下留白與側邊Padding */
-            margin-bottom: 0; /* 移除 margin-bottom，統一由 Padding 控制 */
-            border-bottom: 1px solid var(--line-color); /* 在日期區塊之間加入分界線 */
-            /* 設定跳轉後的停駐點位置，避開導航欄 */
-            scroll-margin-top: 100px;
+            padding: 50px 30px; 
+            border-bottom: 1px solid var(--line-color);
+            scroll-margin-top: 80px;
         }
 
         .day-header {
@@ -157,7 +160,7 @@
         .content {
             grid-column: 2;
             padding-bottom: 30px;
-            padding-right: 30px; /* 文字側邊加入PADDING */
+            padding-right: 30px;
         }
 
         .event-title {
@@ -175,7 +178,7 @@
 
         .event-photo {
             width: 100%;
-            max-width: 800px; /* 照片設定最大寬度，避免全螢幕下太大 */
+            max-width: 800px;
             aspect-ratio: 16 / 9;
             object-fit: cover;
             border-radius: 4px;
@@ -274,7 +277,7 @@
                 </div>
             </div>
         </div>
-        </div>
+    </div>
 
     <div class="day-section" id="day3">
         <div class="day-header">05.02</div>
@@ -328,7 +331,7 @@
                 <div class="content">
                     <div class="event-title">Destination Club</div>
                     <span class="event-info">營業時間：週五週六 21:00 - 05:00</span>
-                    <span class="event-info">營業時間：週日至週四 21:00 - 03:00</span>
+                    <span class="event-info">營業時間：週日至週開 21:00 - 03:00</span>
                     <img src="Destination Club.jpg" class="event-photo">
                 </div>
             </div>
@@ -444,6 +447,13 @@
         DESIGNED FOR PERSONAL JOURNEY
     </footer>
 </div>
+
+<script>
+    // 每次刷新頁面自動回到最上方
+    window.onload = function() {
+        window.scrollTo(0, 0);
+    }
+</script>
 
 </body>
 </html>
