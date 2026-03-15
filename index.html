@@ -65,24 +65,22 @@
             letter-spacing: 2px;
         }
 
-        /* 核心修正：使用 Grid 確保點、線、文字對齊 */
         .itinerary-list {
             display: grid;
-            grid-template-columns: 30px 1fr; /* 左側固定 30px 給圓點與線，右側給內容 */
+            grid-template-columns: 30px 1fr;
             position: relative;
         }
 
         .itinerary-item {
-            display: contents; /* 讓子元素直接參與 grid 佈局 */
+            display: contents;
         }
 
-        /* 圓點容器 */
         .dot-container {
             grid-column: 1;
             display: flex;
             justify-content: center;
             position: relative;
-            padding-top: 8px; /* 圓點在第一行文字的正中央高度 */
+            padding-top: 8px;
         }
 
         .dot {
@@ -93,26 +91,23 @@
             z-index: 2;
         }
 
-        /* 垂直連貫線 */
         .dot-container::after {
             content: "";
             position: absolute;
-            top: 15px; /* 線條從點的下方開始 */
-            bottom: -15px; /* 向下延伸至下一個項目的範圍 */
+            top: 15px;
+            bottom: -15px;
             width: 1px;
             background-color: var(--line-color);
             z-index: 1;
         }
 
-        /* 最後一個項目的線條隱藏 */
         .day-section .itinerary-item:last-child .dot-container::after {
             display: none;
         }
 
-        /* 內容容器 */
         .content {
             grid-column: 2;
-            padding-bottom: 30px; /* 增加每個行程間的距離 */
+            padding-bottom: 30px;
         }
 
         .event-title {
@@ -157,14 +152,14 @@
                 <div class="dot-container"><div class="dot"></div></div>
                 <div class="content">
                     <div class="event-title">天壇公園</div>
-                    <span class="event-info">⏰ 營業時間：旺季 06:00 - 22:00</span>
+                    <span class="event-info">營業時間：旺季 06:00 - 22:00</span>
                 </div>
             </div>
             <div class="itinerary-item">
                 <div class="dot-container"><div class="dot"></div></div>
                 <div class="content">
                     <div class="event-title">前門大街</div>
-                    <span class="event-info">⏰ 營業時間：約 08:00 - 22:00 (各店舖不同)</span>
+                    <span class="event-info">營業時間：約 08:00 - 22:00 (各店舖不同)</span>
                 </div>
             </div>
         </div>
@@ -181,8 +176,8 @@
                 <div class="dot-container"><div class="dot"></div></div>
                 <div class="content">
                     <div class="event-title">紫禁城 (故宮博物院)</div>
-                    <span class="event-info">⏰ 營業時間：08:30 - 17:00 (16:00 停止檢票)</span>
-                    <span class="event-info">⚠️ 備註：每週一閉館</span>
+                    <span class="event-info">營業時間：08:30 - 17:00 (16:00 停止檢票)</span>
+                    <span class="event-info">備註：每週一閉館</span>
                 </div>
             </div>
             <div class="itinerary-item">
@@ -207,7 +202,7 @@
                 <div class="dot-container"><div class="dot"></div></div>
                 <div class="content">
                     <div class="event-title">恭王府</div>
-                    <span class="event-info">⏰ 營業時間：旺季 08:00 - 17:00</span>
+                    <span class="event-info">營業時間：旺季 08:00 - 17:00</span>
                 </div>
             </div>
             <div class="itinerary-item">
@@ -236,7 +231,7 @@
                 <div class="dot-container"><div class="dot"></div></div>
                 <div class="content">
                     <div class="event-title">什剎海 · 銀錠橋 · 煙袋斜街</div>
-                    <span class="event-info">⏰ 營業時間：24小時 / 全天開放</span>
+                    <span class="event-info">營業時間：24小時 / 全天開放</span>
                 </div>
             </div>
             <div class="itinerary-item">
@@ -253,7 +248,7 @@
                 <div class="dot-container"><div class="dot"></div></div>
                 <div class="content">
                     <div class="event-title">頤和園</div>
-                    <span class="event-info">⏰ 營業時間：旺季 06:00 - 20:00</span>
+                    <span class="event-info">營業時間：旺季 06:00 - 20:00</span>
                 </div>
             </div>
             <div class="itinerary-item">
