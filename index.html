@@ -13,7 +13,6 @@
             --info-text: #999;
         }
 
-        /* 平滑捲動 */
         html {
             scroll-behavior: smooth;
         }
@@ -25,6 +24,9 @@
             margin: 0;
             padding: 0;
             line-height: 1.6;
+            /* 隱藏初始化時的閃爍 */
+            opacity: 0;
+            transition: opacity 0.5s ease-in;
         }
 
         .container {
@@ -52,16 +54,14 @@
             color: var(--accent-green);
         }
 
-        /* Banner 圖片樣式 */
         .header-banner {
             width: 100%;
             height: auto;
-            aspect-ratio: 16 / 9; /* 修正比例以適應新圖片 */
+            aspect-ratio: 16 / 9;
             object-fit: cover;
             display: block;
         }
 
-        /* 導航按鈕樣式 */
         .nav-bar {
             position: sticky;
             top: 0;
@@ -78,12 +78,10 @@
             scrollbar-width: none;
         }
         
-        .nav-bar::-webkit-scrollbar {
-            display: none;
-        }
+        .nav-bar::-webkit-scrollbar { display: none; }
 
         .nav-btn {
-            text-decoration: none;
+            cursor: pointer; /* 改為指針 */
             color: var(--accent-green);
             font-size: 0.8rem;
             font-weight: 600;
@@ -93,6 +91,7 @@
             transition: all 0.3s;
             white-space: nowrap;
             flex-shrink: 0;
+            background: none;
         }
 
         .nav-btn:hover {
@@ -100,11 +99,9 @@
             color: white;
         }
 
-        /* 日期區塊 */
         .day-section {
             padding: 50px 30px; 
             border-bottom: 1px solid var(--line-color);
-            scroll-margin-top: 80px;
         }
 
         .day-header {
@@ -123,9 +120,7 @@
             position: relative;
         }
 
-        .itinerary-item {
-            display: contents;
-        }
+        .itinerary-item { display: contents; }
 
         .dot-container {
             grid-column: 1;
@@ -153,9 +148,7 @@
             z-index: 1;
         }
 
-        .day-section .itinerary-item:last-child .dot-container::after {
-            display: none;
-        }
+        .day-section .itinerary-item:last-child .dot-container::after { display: none; }
 
         .content {
             grid-column: 2;
@@ -163,18 +156,8 @@
             padding-right: 30px;
         }
 
-        .event-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-
-        .event-info {
-            font-size: 0.9rem;
-            color: var(--info-text);
-            display: block;
-            line-height: 1.4;
-        }
+        .event-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 4px; }
+        .event-info { font-size: 0.9rem; color: var(--info-text); display: block; line-height: 1.4; }
 
         .event-photo {
             width: 100%;
@@ -187,12 +170,7 @@
         }
 
         footer {
-            text-align: center;
-            font-size: 0.8rem;
-            color: #CCC;
-            padding: 60px 30px;
-            letter-spacing: 2px;
-            background-color: #fcfbf8;
+            text-align: center; font-size: 0.8rem; color: #CCC; padding: 60px 30px; letter-spacing: 2px; background-color: #fcfbf8;
         }
     </style>
 </head>
@@ -208,12 +186,12 @@
     <img src="BEIJINJ1.jpg" alt="北京夜景 banner" class="header-banner">
 
     <nav class="nav-bar">
-        <a href="#day1" class="nav-btn">DAY 1</a>
-        <a href="#day2" class="nav-btn">DAY 2</a>
-        <a href="#day3" class="nav-btn">DAY 3</a>
-        <a href="#day4" class="nav-btn">DAY 4</a>
-        <a href="#day5" class="nav-btn">DAY 5</a>
-        <a href="#day6" class="nav-btn">DAY 6</a>
+        <div onclick="scrollToDay('day1')" class="nav-btn">DAY 1</div>
+        <div onclick="scrollToDay('day2')" class="nav-btn">DAY 2</div>
+        <div onclick="scrollToDay('day3')" class="nav-btn">DAY 3</div>
+        <div onclick="scrollToDay('day4')" class="nav-btn">DAY 4</div>
+        <div onclick="scrollToDay('day5')" class="nav-btn">DAY 5</div>
+        <div onclick="scrollToDay('day6')" class="nav-btn">DAY 6</div>
     </nav>
 
     <div class="day-section" id="day1">
@@ -282,10 +260,7 @@
     <div class="day-section" id="day3">
         <div class="day-header">05.02</div>
         <div class="itinerary-list">
-            <div class="itinerary-item">
-                <div class="dot-container"><div class="dot"></div></div>
-                <div class="content"><div class="event-title">早餐</div></div>
-            </div>
+            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title">早餐</div></div></div>
             <div class="itinerary-item">
                 <div class="dot-container"><div class="dot"></div></div>
                 <div class="content">
@@ -301,22 +276,8 @@
                     <img src="洲際行政酒廊.jpg" class="event-photo">
                 </div>
             </div>
-            <div class="itinerary-item">
-                <div class="dot-container"><div class="dot"></div></div>
-                <div class="content">
-                    <div class="event-title">恭王府</div>
-                    <span class="event-info">營業時間：旺季 08:00 - 17:00</span>
-                    <img src="恭王府.jpg" class="event-photo">
-                </div>
-            </div>
-            <div class="itinerary-item">
-                <div class="dot-container"><div class="dot"></div></div>
-                <div class="content">
-                    <div class="event-title">Happy Hour</div>
-                    <span class="event-info">營業時間：18:00 - 20:00</span>
-                    <img src="洲際行政酒廊.jpg" class="event-photo">
-                </div>
-            </div>
+            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title">恭王府</div><span class="event-info">營業時間：旺季 08:00 - 17:00</span><img src="恭王府.jpg" class="event-photo"></div></div>
+            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title">Happy Hour</div><span class="event-info">營業時間：18:00 - 20:00</span><img src="洲際行政酒廊.jpg" class="event-photo"></div></div>
             <div class="itinerary-item">
                 <div class="dot-container"><div class="dot"></div></div>
                 <div class="content">
@@ -326,141 +287,75 @@
                     <img src="三里屯步行街.jpg" class="event-photo">
                 </div>
             </div>
-            <div class="itinerary-item">
-                <div class="dot-container"><div class="dot"></div></div>
-                <div class="content">
-                    <div class="event-title">Destination Club</div>
-                    <span class="event-info">營業時間：週五週六 21:00 - 05:00</span>
-                    <span class="event-info">營業時間：週日至週四 21:00 - 03:00</span>
-                    <img src="Destination Club.jpg" class="event-photo">
-                </div>
-            </div>
+            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title">Destination Club</div><span class="event-info">營業時間：週五週六 21:00 - 05:00</span><span class="event-info">營業時間：週日至週四 21:00 - 03:00</span><img src="Destination Club.jpg" class="event-photo"></div></div>
         </div>
     </div>
 
     <div class="day-section" id="day4">
         <div class="day-header">05.03</div>
         <div class="itinerary-list">
-            <div class="itinerary-item">
-                <div class="dot-container"><div class="dot"></div></div>
-                <div class="content"><div class="event-title">早餐</div></div>
-            </div>
-            <div class="itinerary-item">
-                <div class="dot-container"><div class="dot"></div></div>
-                <div class="content">
-                    <div class="event-title">泳池＆SPA</div>
-                    <img src="洲際泳池.jpg" class="event-photo">
-                </div>
-            </div>
-            <div class="itinerary-item">
-                <div class="dot-container"><div class="dot"></div></div>
-                <div class="content">
-                    <div class="event-title">下午茶時光</div>
-                    <span class="event-info">營業時間：14:30 - 16:30</span>
-                    <img src="洲際行政酒廊.jpg" class="event-photo">
-                </div>
-            </div>
-            <div class="itinerary-item">
-                <div class="dot-container"><div class="dot"></div></div>
-                <div class="content">
-                    <div class="event-title">什剎海 & 銀錠橋</div>
-                    <span class="event-info">營業時間：全天開放</span>
-                    <img src="什刹海（銀錠橋）.jpg" class="event-photo">
-                </div>
-            </div>
-            <div class="itinerary-item">
-                <div class="dot-container"><div class="dot"></div></div>
-                <div class="content">
-                    <div class="event-title">煙袋斜街</div>
-                    <span class="event-info">營業時間：24小時開放</span>
-                    <img src="煙袋斜街.jpg" class="event-photo">
-                </div>
-            </div>
-            <div class="itinerary-item">
-                <div class="dot-container"><div class="dot"></div></div>
-                <div class="content">
-                    <div class="event-title">Happy Hour</div>
-                    <span class="event-info">營業時間：18:00 - 20:00</span>
-                    <img src="洲際行政酒廊.jpg" class="event-photo">
-                </div>
-            </div>
+            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title">早餐</div></div></div>
+            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title">泳池＆SPA</div><img src="洲際泳池.jpg" class="event-photo"></div></div>
+            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title">下午茶時光</div><span class="event-info">營業時間：14:30 - 16:30</span><img src="洲際行政酒廊.jpg" class="event-photo"></div></div>
+            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title">什剎海 & 銀錠橋</div><span class="event-info">營業時間：全天開放</span><img src="什刹海（銀錠橋）.jpg" class="event-photo"></div></div>
+            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title">煙袋斜街</div><span class="event-info">營業時間：24小時開放</span><img src="煙袋斜街.jpg" class="event-photo"></div></div>
+            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title">Happy Hour</div><span class="event-info">營業時間：18:00 - 20:00</span><img src="洲際行政酒廊.jpg" class="event-photo"></div></div>
         </div>
     </div>
 
     <div class="day-section" id="day5">
         <div class="day-header">05.04</div>
         <div class="itinerary-list">
-            <div class="itinerary-item">
-                <div class="dot-container"><div class="dot"></div></div>
-                <div class="content"><div class="event-title">早餐</div></div>
-            </div>
-            <div class="itinerary-item">
-                <div class="dot-container"><div class="dot"></div></div>
-                <div class="content">
-                    <div class="event-title">雍和宮</div>
-                    <span class="event-info">營業時間：09:00 - 16:30</span>
-                    <img src="雍和宮.jpg" class="event-photo">
-                </div>
-            </div>
-            <div class="itinerary-item">
-                <div class="dot-container"><div class="dot"></div></div>
-                <div class="content">
-                    <div class="event-title">下午茶時光</div>
-                    <span class="event-info">營業時間：14:30 - 16:30</span>
-                    <img src="洲際行政酒廊.jpg" class="event-photo">
-                </div>
-            </div>
-            <div class="itinerary-item">
-                <div class="dot-container"><div class="dot"></div></div>
-                <div class="content">
-                    <div class="event-title">頤和園</div>
-                    <span class="event-info">營業時間：旺季 06:00 - 20:00</span>
-                    <img src="頤和園.jpg" class="event-photo">
-                </div>
-            </div>
-            <div class="itinerary-item">
-                <div class="dot-container"><div class="dot"></div></div>
-                <div class="content">
-                    <div class="event-title">Happy Hour</div>
-                    <span class="event-info">營業時間：18:00 - 20:00</span>
-                    <img src="洲際行政酒廊.jpg" class="event-photo">
-                </div>
-            </div>
+            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title">早餐</div></div></div>
+            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title">雍和宮</div><span class="event-info">營業時間：09:00 - 16:30</span><img src="雍和宮.jpg" class="event-photo"></div></div>
+            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title">下午茶時光</div><span class="event-info">營業時間：14:30 - 16:30</span><img src="洲際行政酒廊.jpg" class="event-photo"></div></div>
+            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title">頤和園</div><span class="event-info">營業時間：旺季 06:00 - 20:00</span><img src="頤和園.jpg" class="event-photo"></div></div>
+            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title">Happy Hour</div><span class="event-info">營業時間：18:00 - 20:00</span><img src="洲際行政酒廊.jpg" class="event-photo"></div></div>
         </div>
     </div>
 
     <div class="day-section" id="day6">
         <div class="day-header">05.05</div>
         <div class="itinerary-list">
-            <div class="itinerary-item">
-                <div class="dot-container"><div class="dot"></div></div>
-                <div class="content"><div class="event-title">酒店早餐</div></div>
-            </div>
-            <div class="itinerary-item">
-                <div class="dot-container"><div class="dot"></div></div>
-                <div class="content"><div class="event-title">PEK 首都國際機場</div></div>
-            </div>
+            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title">酒店早餐</div></div></div>
+            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title">PEK 首都國際機場</div></div></div>
         </div>
     </div>
 
-    <footer>
-        DESIGNED FOR PERSONAL JOURNEY
-    </footer>
+    <footer>DESIGNED FOR PERSONAL JOURNEY</footer>
 </div>
 
 <script>
-    // 確保每次進入頁面或重新整理都強制回到最上方
+    // 1. 強制設定滾動恢復為手動
     if ('scrollRestoration' in history) {
         history.scrollRestoration = 'manual';
     }
 
-    window.onload = function() {
-        // 如果網址有錨點（如 #day2），先清除它以防止瀏覽器跳轉
-        if (window.location.hash) {
-            history.replaceState("", document.title, window.location.pathname + window.location.search);
+    // 2. 導航跳轉函數
+    function scrollToDay(dayId) {
+        const element = document.getElementById(dayId);
+        if (element) {
+            const offset = 80; // 避開導航欄
+            const bodyRect = document.body.getBoundingClientRect().top;
+            const elementRect = element.getBoundingClientRect().top;
+            const elementPosition = elementRect - bodyRect;
+            const offsetPosition = elementPosition - offset;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
         }
-        window.scrollTo(0, 0);
-    };
+    }
+
+    // 3. 頁面載入邏輯
+    window.addEventListener('load', function() {
+        // 延遲 50 毫秒確保瀏覽器渲染完成
+        setTimeout(() => {
+            window.scrollTo(0, 0);
+            document.body.style.opacity = "1"; // 顯示頁面
+        }, 50);
+    });
 </script>
 
 </body>
