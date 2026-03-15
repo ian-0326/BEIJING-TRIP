@@ -33,15 +33,36 @@
         .subtitle { text-transform: uppercase; font-size: 0.8rem; letter-spacing: 3px; color: var(--accent-green); }
         .header-banner { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; display: block; }
 
-        /* 導航欄與語言切換 */
+        /* 懸浮語言切換按鈕 */
+        .lang-switch-fixed {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 200;
+            background: white;
+            border: 1px solid var(--line-color);
+            border-radius: 30px;
+            padding: 5px 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.2rem;
+            transition: transform 0.2s;
+        }
+        .lang-switch-fixed:active { transform: scale(0.95); }
+        .lang-label { font-size: 0.75rem; font-weight: 600; color: var(--accent-green); }
+
+        /* 導航欄 */
         .nav-bar {
             position: sticky;
             top: 0;
             background: rgba(255, 255, 255, 0.98);
             padding: 15px 20px;
             display: flex;
-            align-items: center;
             justify-content: center; 
+            flex-wrap: nowrap; 
             overflow-x: auto; 
             -webkit-overflow-scrolling: touch;
             gap: 12px;
@@ -51,7 +72,7 @@
         }
         .nav-bar::-webkit-scrollbar { display: none; }
 
-        .nav-btn, .lang-toggle {
+        .nav-btn {
             cursor: pointer;
             color: var(--accent-green);
             font-size: 0.8rem;
@@ -64,15 +85,21 @@
             flex-shrink: 0;
             background: none;
         }
+        .nav-btn:hover { background: var(--accent-green); color: white; }
 
-        .nav-btn:hover, .lang-toggle:hover { background: var(--accent-green); color: white; }
-
-        /* 語言切換按鈕特別樣式 */
-        .lang-toggle {
+        /* 地圖圓形按鈕 */
+        .map-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
             background-color: var(--accent-green);
-            color: white;
-            margin-left: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            text-decoration: none;
         }
+        .map-icon { width: 14px; height: 14px; fill: white; }
 
         .day-section { padding: 50px 30px; border-bottom: 1px solid var(--line-color); scroll-margin-top: 80px; }
         .day-header { font-size: 1.2rem; background-color: var(--accent-green); color: white; display: inline-block; padding: 5px 25px; margin-bottom: 30px; letter-spacing: 2px; }
@@ -87,17 +114,18 @@
         .content { grid-column: 2; padding-bottom: 30px; padding-right: 30px; }
         .event-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center; gap: 15px; }
         .event-text { flex-grow: 1; word-wrap: break-word; }
-
-        .map-btn { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; background-color: var(--accent-green); border-radius: 50%; flex-shrink: 0; text-decoration: none; }
-        .map-icon { width: 14px; height: 14px; fill: white; }
-
         .event-info { font-size: 0.9rem; color: var(--info-text); display: block; line-height: 1.4; }
-        .event-photo { width: 100%; max-width: 800px; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 4px; margin: 10px 0; }
+        .event-photo { width: 100%; max-width: 800px; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 4px; margin: 10px 0; background-color: #eee; }
 
         footer { text-align: center; font-size: 0.8rem; color: #CCC; padding: 60px 30px; letter-spacing: 2px; background-color: #fcfbf8; }
     </style>
 </head>
 <body>
+
+<div class="lang-switch-fixed" onclick="toggleLanguage()">
+    <span id="langFlag">🇰🇷</span>
+    <span class="lang-label" id="langLabel">KOREAN</span>
+</div>
 
 <svg style="display: none;">
     <symbol id="icon-map" viewBox="0 0 24 24">
@@ -121,7 +149,6 @@
         <div onclick="scrollToDay('day4')" class="nav-btn">DAY 4</div>
         <div onclick="scrollToDay('day5')" class="nav-btn">DAY 5</div>
         <div onclick="scrollToDay('day6')" class="nav-btn">DAY 6</div>
-        <button onclick="toggleLanguage()" class="lang-toggle" id="langBtn">韓文模式</button>
     </nav>
 
     <div class="day-section" id="day1">
@@ -155,7 +182,6 @@
                         <span class="event-text" data-zh="前門大街" data-ko="전문대가 (치엔먼다지에)">前門大街</span>
                         <a href="https://surl.amap.com/2neRbJY1laZ5" target="_blank" class="map-btn"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
                     </div>
-                    <span class="event-info" data-zh="營業時間：約 08:00 - 22:00" data-ko="영업시간: 약 08:00 - 22:00">營業時間：約 08:00 - 22:00</span>
                     <img src="前門大街.jpg" class="event-photo">
                 </div>
             </div>
@@ -177,10 +203,9 @@
                 <div class="dot-container"><div class="dot"></div></div>
                 <div class="content">
                     <div class="event-title">
-                        <span class="event-text" data-zh="紫禁城 (故宮博物院)" data-ko="자금성 (고궁박물院)">紫禁城 (故宮博物院)</span>
+                        <span class="event-text" data-zh="紫禁城 (故宮博物院)" data-ko="자금성 (고궁박물원)">紫禁城 (故宮博物院)</span>
                         <a href="https://surl.amap.com/h2Vgp70x61E" target="_blank" class="map-btn"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
                     </div>
-                    <span class="event-info" data-zh="營業時間：08:30 - 17:00 (週一閉館)" data-ko="영업시간: 08:30 - 17:00 (월요일 휴관)">營業時間：08:30 - 17:00 (週一閉館)</span>
                     <img src="北京故宮紫禁城.jpg" class="event-photo">
                 </div>
             </div>
@@ -202,7 +227,7 @@
                     <img src="三里屯洲際.jpg" class="event-photo">
                 </div>
             </div>
-            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title" data-zh="下午茶時光" data-ko="애프터눈 티 타임">下午茶時光</div><span class="event-info" data-zh="營業時間：14:30 - 16:30" data-ko="영업시간: 14:30 - 16:30">營業時間：14:30 - 16:30</span><img src="洲際行政酒廊.jpg" class="event-photo"></div></div>
+            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title" data-zh="下午茶時光" data-ko="애프터눈 티 타임">下午茶時光</div><img src="洲際行政酒廊.jpg" class="event-photo"></div></div>
             <div class="itinerary-item">
                 <div class="dot-container"><div class="dot"></div></div>
                 <div class="content">
@@ -251,20 +276,43 @@
                     <img src="什刹海（銀錠橋）.jpg" class="event-photo">
                 </div>
             </div>
+            <div class="itinerary-item">
+                <div class="dot-container"><div class="dot"></div></div>
+                <div class="content">
+                    <div class="event-title">
+                        <span class="event-text" data-zh="煙袋斜街" data-ko="엔다이시에지에 (후통거리)">煙袋斜街</span>
+                        <a href="https://surl.amap.com/EhOtLIO7Lx" target="_blank" class="map-btn"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
+                    </div>
+                    <img src="煙袋斜街.jpg" class="event-photo">
+                </div>
+            </div>
         </div>
     </div>
 
     <div class="day-section" id="day5">
         <div class="day-header">05.04</div>
         <div class="itinerary-list">
-            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title">
-                <span class="event-text" data-zh="雍和宮" data-ko="옹화궁 (용허궁)">雍和宮</span>
-                <a href="https://surl.amap.com/4blqS661g2GX" target="_blank" class="map-btn"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
-            </div><img src="雍和宮.jpg" class="event-photo"></div></div>
-            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title">
-                <span class="event-text" data-zh="頤和園" data-ko="이화원">頤和園</span>
-                <a href="https://surl.amap.com/6OR83WZt4LY" target="_blank" class="map-btn"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
-            </div><img src="頤和園.jpg" class="event-photo"></div></div>
+            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title" data-zh="早餐" data-ko="조식">早餐</div></div></div>
+            <div class="itinerary-item">
+                <div class="dot-container"><div class="dot"></div></div>
+                <div class="content">
+                    <div class="event-title">
+                        <span class="event-text" data-zh="雍和宮" data-ko="옹화궁 (용허궁)">雍和宮</span>
+                        <a href="https://surl.amap.com/4blqS661g2GX" target="_blank" class="map-btn"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
+                    </div>
+                    <img src="雍和宮.jpg" class="event-photo">
+                </div>
+            </div>
+            <div class="itinerary-item">
+                <div class="dot-container"><div class="dot"></div></div>
+                <div class="content">
+                    <div class="event-title">
+                        <span class="event-text" data-zh="頤和園" data-ko="이화원">頤和園</span>
+                        <a href="https://surl.amap.com/6OR83WZt4LY" target="_blank" class="map-btn"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
+                    </div>
+                    <img src="頤和園.jpg" class="event-photo">
+                </div>
+            </div>
         </div>
     </div>
 
@@ -285,13 +333,11 @@
     function toggleLanguage() {
         currentLang = currentLang === 'zh' ? 'ko' : 'zh';
         const elements = document.querySelectorAll('[data-zh]');
-        
-        elements.forEach(el => {
-            el.textContent = el.getAttribute(`data-${currentLang}`);
-        });
+        elements.forEach(el => { el.textContent = el.getAttribute(`data-${currentLang}`); });
 
-        // 更新按鈕文字
-        document.getElementById('langBtn').textContent = currentLang === 'zh' ? '韓文模式' : '中文模式';
+        // 更新按鈕樣式
+        document.getElementById('langFlag').textContent = currentLang === 'zh' ? '🇰🇷' : '🇹🇼';
+        document.getElementById('langLabel').textContent = currentLang === 'zh' ? 'KOREAN' : 'CHINESE';
     }
 
     // 捲動邏輯
@@ -305,6 +351,7 @@
             window.scrollTo({ top: elementRect - bodyRect - offset, behavior: 'smooth' });
         }
     }
+
     window.addEventListener('load', function() {
         setTimeout(() => { window.scrollTo(0, 0); document.body.style.opacity = "1"; }, 50);
     });
