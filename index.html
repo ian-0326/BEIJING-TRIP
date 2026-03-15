@@ -54,14 +54,16 @@
             color: var(--accent-green);
         }
 
-        /* 導航按鈕樣式 */
+        /* 導航按鈕樣式 - 修正間距與版面 */
         .nav-bar {
             position: sticky;
             top: 0;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.98);
             padding: 15px 0;
             display: flex;
-            justify-content: space-between;
+            justify-content: center; /* 按鈕居中 */
+            flex-wrap: wrap; /* 支援多行，防止手機版擠壓 */
+            gap: 10px; /* 按鈕之間的間距 */
             z-index: 100;
             border-bottom: 1px solid var(--line-color);
             margin-bottom: 40px;
@@ -72,10 +74,11 @@
             color: var(--accent-green);
             font-size: 0.75rem;
             font-weight: 600;
-            padding: 5px 10px;
+            padding: 6px 14px;
             border: 1px solid var(--accent-green);
             border-radius: 20px;
             transition: all 0.3s;
+            white-space: nowrap; /* 防止按鈕文字折行 */
         }
 
         .nav-btn:hover {
@@ -85,8 +88,8 @@
 
         .day-section {
             margin-bottom: 40px;
-            /* 設定跳轉後的停駐點位置，避開導航欄 */
-            scroll-margin-top: 80px;
+            /* 設定跳轉後的停駐點位置，避開導航欄與適當留白 */
+            scroll-margin-top: 100px;
         }
 
         .day-header {
@@ -190,6 +193,7 @@
         <a href="#day3" class="nav-btn">DAY 3</a>
         <a href="#day4" class="nav-btn">DAY 4</a>
         <a href="#day5" class="nav-btn">DAY 5</a>
+        <a href="#day6" class="nav-btn">DAY 6</a>
     </nav>
 
     <div class="day-section" id="day1">
@@ -405,7 +409,7 @@
         </div>
     </div>
 
-    <div class="day-section">
+    <div class="day-section" id="day6">
         <div class="day-header">05.05</div>
         <div class="itinerary-list">
             <div class="itinerary-item">
