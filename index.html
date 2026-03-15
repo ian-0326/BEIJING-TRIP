@@ -13,6 +13,11 @@
             --info-text: #999;
         }
 
+        /* 讓捲動更平滑 */
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             background-color: var(--bg-color);
             color: var(--main-text);
@@ -32,9 +37,7 @@
 
         header {
             text-align: center;
-            border-bottom: 1px solid var(--line-color);
-            padding-bottom: 30px;
-            margin-bottom: 40px;
+            padding-bottom: 20px;
         }
 
         h1 {
@@ -51,8 +54,39 @@
             color: var(--accent-green);
         }
 
+        /* 導航按鈕樣式 */
+        .nav-bar {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 0;
+            display: flex;
+            justify-content: space-between;
+            z-index: 100;
+            border-bottom: 1px solid var(--line-color);
+            margin-bottom: 40px;
+        }
+
+        .nav-btn {
+            text-decoration: none;
+            color: var(--accent-green);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 5px 10px;
+            border: 1px solid var(--accent-green);
+            border-radius: 20px;
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover {
+            background: var(--accent-green);
+            color: white;
+        }
+
         .day-section {
             margin-bottom: 40px;
+            /* 設定跳轉後的停駐點位置，避開導航欄 */
+            scroll-margin-top: 80px;
         }
 
         .day-header {
@@ -150,7 +184,15 @@
         <p>2026.04.30 — 05.05</p>
     </header>
 
-    <div class="day-section">
+    <nav class="nav-bar">
+        <a href="#day1" class="nav-btn">DAY 1</a>
+        <a href="#day2" class="nav-btn">DAY 2</a>
+        <a href="#day3" class="nav-btn">DAY 3</a>
+        <a href="#day4" class="nav-btn">DAY 4</a>
+        <a href="#day5" class="nav-btn">DAY 5</a>
+    </nav>
+
+    <div class="day-section" id="day1">
         <div class="day-header">04.30</div>
         <div class="itinerary-list">
             <div class="itinerary-item">
@@ -179,14 +221,12 @@
         </div>
     </div>
 
-    <div class="day-section">
+    <div class="day-section" id="day2">
         <div class="day-header">05.01</div>
         <div class="itinerary-list">
             <div class="itinerary-item">
                 <div class="dot-container"><div class="dot"></div></div>
-                <div class="content">
-                    <div class="event-title">早餐</div>
-                </div>
+                <div class="content"><div class="event-title">早餐</div></div>
             </div>
             <div class="itinerary-item">
                 <div class="dot-container"><div class="dot"></div></div>
@@ -215,14 +255,12 @@
         </div>
     </div>
 
-    <div class="day-section">
+    <div class="day-section" id="day3">
         <div class="day-header">05.02</div>
         <div class="itinerary-list">
             <div class="itinerary-item">
                 <div class="dot-container"><div class="dot"></div></div>
-                <div class="content">
-                    <div class="event-title">早餐</div>
-                </div>
+                <div class="content"><div class="event-title">早餐</div></div>
             </div>
             <div class="itinerary-item">
                 <div class="dot-container"><div class="dot"></div></div>
@@ -276,7 +314,7 @@
         </div>
     </div>
 
-    <div class="day-section">
+    <div class="day-section" id="day4">
         <div class="day-header">05.03</div>
         <div class="itinerary-list">
             <div class="itinerary-item">
@@ -325,7 +363,7 @@
         </div>
     </div>
 
-    <div class="day-section">
+    <div class="day-section" id="day5">
         <div class="day-header">05.04</div>
         <div class="itinerary-list">
             <div class="itinerary-item">
