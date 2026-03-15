@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>北京奢華散策 - 我的個人旅行手冊</title>
+    <style>
+        :root {
+            --bg-color: #F9F7F2;
+            --main-text: #4A4A4A;
+            --accent-green: #7D8E7E;
+            --line-color: #D1CEC7;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--main-text);
+            font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 1px solid var(--line-color);
+            padding-bottom: 30px;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            letter-spacing: 5px;
+            margin: 0;
+            font-weight: 300;
+        }
+
+        .subtitle {
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            color: var(--accent-green);
+        }
+
+        /* 日期區塊 */
+        .day-section {
+            margin-bottom: 50px;
+        }
+
+        .day-header {
+            font-size: 1.5rem;
+            background-color: var(--accent-green);
+            color: white;
+            display: inline-block;
+            padding: 5px 20px;
+            margin-bottom: 25px;
+        }
+
+        /* 時間軸結構 */
+        .itinerary-item {
+            display: flex;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .time-box {
+            width: 80px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: var(--accent-green);
+            text-align: right;
+            padding-right: 20px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent-green);
+            border-radius: 50%;
+            margin-top: 7px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .content {
+            flex: 1;
+            padding-left: 20px;
+            padding-bottom: 20px;
+            border-left: 1px solid var(--line-color);
+            margin-left: -4.5px; /* 對齊圓點中心 */
+        }
+
+        .event-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .event-desc {
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #AAA;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid var(--line-color);
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 20px; }
+            .time-box { width: 60px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="subtitle">Beijing · Luxury Journey</div>
+        <h1>北京·皇城慢旅</h1>
+        <p>2026.04.30 — 05.05</p>
+    </header>
+
+    <div class="day-section">
+        <div class="day-header">04.30</div>
+        <div class="itinerary-item">
+            <div class="time-box">Check In</div><div class="dot"></div>
+            <div class="content"><div class="event-title">JW Marriott Hotel</div><div class="event-desc">入住並稍作休息</div></div>
+        </div>
+        <div class="itinerary-item">
+            <div class="time-box">PM</div><div class="dot"></div>
+            <div class="content"><div class="event-title">天壇</div><div class="event-desc">漫步祈年殿，感受皇室祭天文化</div></div>
+        </div>
+        <div class="itinerary-item">
+            <div class="time-box">Evening</div><div class="dot"></div>
+            <div class="content"><div class="event-title">前門大街</div><div class="event-desc">老字號匯集，感受京味歷史</div></div>
+        </div>
+    </div>
+
+    <div class="day-section">
+        <div class="day-header">05.01</div>
+        <div class="itinerary-item">
+            <div class="time-box">09:00</div><div class="dot"></div>
+            <div class="content"><div class="event-title">酒店早餐 & 泳池</div><div class="event-desc">慢節奏開始新的一天</div></div>
+        </div>
+        <div class="itinerary-item">
+            <div class="time-box">13:00</div><div class="dot"></div>
+            <div class="content"><div class="event-title">紫禁城</div><div class="event-desc">深度遊覽故宮博物院</div></div>
+        </div>
+        <div class="itinerary-item">
+            <div class="time-box">18:00</div><div class="dot"></div>
+            <div class="content"><div class="event-title">酒店 Happy Hour</div><div class="event-desc">JW Marriott 行政酒廊</div></div>
+        </div>
+    </div>
+
+    <div class="day-section">
+        <div class="day-header">05.02</div>
+        <div class="itinerary-item">
+            <div class="time-box">AM</div><div class="dot"></div>
+            <div class="content"><div class="event-title">InterContinental Check In</div><div class="event-desc">轉場入住三里屯通盈中心洲際酒店</div></div>
+        </div>
+        <div class="itinerary-item">
+            <div class="time-box">14:30</div><div class="dot"></div>
+            <div class="content"><div class="event-title">酒店下午茶</div><div class="event-desc">優雅時光 14:30-16:30</div></div>
+        </div>
+        <div class="itinerary-item">
+            <div class="time-box">PM</div><div class="dot"></div>
+            <div class="content"><div class="event-title">恭王府</div><div class="event-desc">一座恭王府，半部清代史</div></div>
+        </div>
+        <div class="itinerary-item">
+            <div class="time-box">18:00</div><div class="dot"></div>
+            <div class="content"><div class="event-title">酒店 HH & 三里屯太古里</div><div class="event-desc">體驗帝都潮流心臟地帶</div></div>
+        </div>
+        <div class="itinerary-item">
+            <div class="time-box">Late</div><div class="dot"></div>
+            <div class="content"><div class="event-title">Destination Club</div><div class="event-desc">感受北京精彩夜生活</div></div>
+        </div>
+    </div>
+
+    <div class="day-section">
+        <div class="day-header">05.03</div>
+        <div class="itinerary-item">
+            <div class="time-box">AM</div><div class="dot"></div>
+            <div class="content"><div class="event-title">泳池 & 悠閒早晨</div></div>
+        </div>
+        <div class="itinerary-item">
+            <div class="time-box">14:30</div><div class="dot"></div>
+            <div class="content"><div class="event-title">酒店下午茶</div></div>
+        </div>
+        <div class="itinerary-item">
+            <div class="time-box">16:30</div><div class="dot"></div>
+            <div class="content"><div class="event-title">什剎海 · 銀錠橋 · 煙袋斜街</div><div class="event-desc">老北京胡同與水岸風情</div></div>
+        </div>
+        <div class="itinerary-item">
+            <div class="time-box">18:00</div><div class="dot"></div>
+            <div class="content"><div class="event-title">酒店 Happy Hour</div></div>
+        </div>
+    </div>
+
+    <div class="day-section">
+        <div class="day-header">05.04</div>
+        <div class="itinerary-item">
+            <div class="time-box">AM</div><div class="dot"></div>
+            <div class="content"><div class="event-title">頤和園</div><div class="event-desc">皇家園林散策</div></div>
+        </div>
+        <div class="itinerary-item">
+            <div class="time-box">14:30</div><div class="dot"></div>
+            <div class="content"><div class="event-title">酒店下午茶</div></div>
+        </div>
+        <div class="itinerary-item">
+            <div class="time-box">18:00</div><div class="dot"></div>
+            <div class="content"><div class="event-title">酒店 Happy Hour</div></div>
+        </div>
+    </div>
+
+    <div class="day-section">
+        <div class="day-header">05.05</div>
+        <div class="itinerary-item">
+            <div class="time-box">Morning</div><div class="dot"></div>
+            <div class="content"><div class="event-title">酒店最後早餐</div></div>
+        </div>
+        <div class="itinerary-item">
+            <div class="time-box">Departure</div><div class="dot"></div>
+            <div class="content"><div class="event-title">PEK 首都國際機場</div><div class="event-desc">帶滿回憶賦歸</div></div>
+        </div>
+    </div>
+
+    <footer>
+        ONE DAY JOURNEY · BEIJING
+    </footer>
+</div>
+
+</body>
+</html>
