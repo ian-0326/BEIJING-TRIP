@@ -23,35 +23,44 @@
             color: var(--main-text);
             font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 0; /* 移除 body 的 padding */
             line-height: 1.6;
         }
 
         .container {
-            max-width: 600px;
-            margin: 0 auto;
+            width: 100%; /* 全螢幕寬度 */
+            max-width: none; /* 取消最大寬度限制 */
             background: #fff;
-            padding: 40px 30px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            padding: 0; /* 移除 container 的預設 padding */
+            box-shadow: none; /* 移除 box-shadow，讓畫面更純淨 */
         }
 
         header {
             text-align: center;
-            padding-bottom: 20px;
+            padding: 40px 30px; /* 為標題加入上下留白 */
         }
 
         h1 {
-            font-size: 1.8rem;
-            letter-spacing: 6px;
+            font-size: 2.2rem; /* 標題稍微放大 */
+            letter-spacing: 8px;
             margin: 10px 0;
             font-weight: 300;
         }
 
         .subtitle {
             text-transform: uppercase;
-            font-size: 0.7rem;
-            letter-spacing: 2px;
+            font-size: 0.8rem;
+            letter-spacing: 3px;
             color: var(--accent-green);
+        }
+
+        /* Banner 圖片樣式 */
+        .header-banner {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 21 / 9; /* 強制橫式 Banner 比例 */
+            object-fit: cover; /* 確保圖片填滿且不變形 */
+            display: block; /* 移除圖片下方的微小空隙 */
         }
 
         /* 導航按鈕樣式 - 修正間距與版面 */
@@ -59,22 +68,22 @@
             position: sticky;
             top: 0;
             background: rgba(255, 255, 255, 0.98);
-            padding: 15px 0;
+            padding: 20px 30px; /* 側邊加入 padding */
             display: flex;
             justify-content: center; /* 按鈕居中 */
             flex-wrap: wrap; /* 支援多行，防止手機版擠壓 */
-            gap: 10px; /* 按鈕之間的間距 */
+            gap: 12px; /* 按鈕之間的間距 */
             z-index: 100;
             border-bottom: 1px solid var(--line-color);
-            margin-bottom: 40px;
+            margin-bottom: 0; /* 移除 margin-bottom，讓導航欄緊鄰第一個日期 */
         }
 
         .nav-btn {
             text-decoration: none;
             color: var(--accent-green);
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             font-weight: 600;
-            padding: 6px 14px;
+            padding: 8px 18px;
             border: 1px solid var(--accent-green);
             border-radius: 20px;
             transition: all 0.3s;
@@ -86,19 +95,22 @@
             color: white;
         }
 
+        /* 日期區塊 */
         .day-section {
-            margin-bottom: 40px;
-            /* 設定跳轉後的停駐點位置，避開導航欄與適當留白 */
+            padding: 60px 30px; /* 加入上下留白與側邊Padding */
+            margin-bottom: 0; /* 移除 margin-bottom，統一由 Padding 控制 */
+            border-bottom: 1px solid var(--line-color); /* 在日期區塊之間加入分界線 */
+            /* 設定跳轉後的停駐點位置，避開導航欄 */
             scroll-margin-top: 100px;
         }
 
         .day-header {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             background-color: var(--accent-green);
             color: white;
             display: inline-block;
-            padding: 4px 20px;
-            margin-bottom: 20px;
+            padding: 5px 25px;
+            margin-bottom: 30px;
             letter-spacing: 2px;
         }
 
@@ -145,16 +157,17 @@
         .content {
             grid-column: 2;
             padding-bottom: 30px;
+            padding-right: 30px; /* 文字側邊加入PADDING */
         }
 
         .event-title {
-            font-size: 1.05rem;
+            font-size: 1.1rem;
             font-weight: 600;
             margin-bottom: 4px;
         }
 
         .event-info {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             color: var(--info-text);
             display: block;
             line-height: 1.4;
@@ -162,6 +175,7 @@
 
         .event-photo {
             width: 100%;
+            max-width: 800px; /* 照片設定最大寬度，避免全螢幕下太大 */
             aspect-ratio: 16 / 9;
             object-fit: cover;
             border-radius: 4px;
@@ -171,10 +185,11 @@
 
         footer {
             text-align: center;
-            font-size: 0.7rem;
+            font-size: 0.8rem;
             color: #CCC;
-            margin-top: 40px;
+            padding: 60px 30px;
             letter-spacing: 2px;
+            background-color: #fcfbf8;
         }
     </style>
 </head>
@@ -186,6 +201,8 @@
         <h1>北京·皇城慢旅</h1>
         <p>2026.04.30 — 05.05</p>
     </header>
+
+    <img src="BEIJINJ1.jpg" alt="長城 banner" class="header-banner">
 
     <nav class="nav-bar">
         <a href="#day1" class="nav-btn">DAY 1</a>
@@ -257,7 +274,7 @@
                 </div>
             </div>
         </div>
-    </div>
+        </div>
 
     <div class="day-section" id="day3">
         <div class="day-header">05.02</div>
