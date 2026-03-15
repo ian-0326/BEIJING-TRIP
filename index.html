@@ -24,7 +24,6 @@
             margin: 0;
             padding: 0;
             line-height: 1.6;
-            /* 隱藏初始化時的閃爍 */
             opacity: 0;
             transition: opacity 0.5s ease-in;
         }
@@ -62,6 +61,7 @@
             display: block;
         }
 
+        /* 導航按鈕樣式 */
         .nav-bar {
             position: sticky;
             top: 0;
@@ -81,7 +81,7 @@
         .nav-bar::-webkit-scrollbar { display: none; }
 
         .nav-btn {
-            cursor: pointer; /* 改為指針 */
+            cursor: pointer;
             color: var(--accent-green);
             font-size: 0.8rem;
             font-weight: 600;
@@ -97,6 +97,31 @@
         .nav-btn:hover {
             background: var(--accent-green);
             color: white;
+        }
+
+        /* 地圖圓形按鈕樣式 */
+        .map-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            background-color: var(--accent-green);
+            border-radius: 50%;
+            margin-left: 8px;
+            vertical-align: middle;
+            text-decoration: none;
+            transition: transform 0.2s;
+        }
+
+        .map-btn:active {
+            transform: scale(0.9);
+        }
+
+        .map-icon {
+            width: 14px;
+            height: 14px;
+            fill: white;
         }
 
         .day-section {
@@ -156,7 +181,14 @@
             padding-right: 30px;
         }
 
-        .event-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 4px; }
+        .event-title { 
+            font-size: 1.1rem; 
+            font-weight: 600; 
+            margin-bottom: 4px; 
+            display: flex;
+            align-items: center;
+        }
+
         .event-info { font-size: 0.9rem; color: var(--info-text); display: block; line-height: 1.4; }
 
         .event-photo {
@@ -175,6 +207,12 @@
     </style>
 </head>
 <body>
+
+<svg style="display: none;">
+    <symbol id="icon-map" viewBox="0 0 24 24">
+        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+    </symbol>
+</svg>
 
 <div class="container">
     <header>
@@ -200,14 +238,20 @@
             <div class="itinerary-item">
                 <div class="dot-container"><div class="dot"></div></div>
                 <div class="content">
-                    <div class="event-title">JW Marriott Hotel Beijing Central</div>
+                    <div class="event-title">
+                        JW Marriott Hotel Beijing Central
+                        <a href="https://surl.amap.com/gZRGr0WEaOn" target="_blank" class="map-btn"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
+                    </div>
                     <img src="JW Beijing.jpg" class="event-photo">
                 </div>
             </div>
             <div class="itinerary-item">
                 <div class="dot-container"><div class="dot"></div></div>
                 <div class="content">
-                    <div class="event-title">天壇公園</div>
+                    <div class="event-title">
+                        天壇公園
+                        <a href="https://surl.amap.com/8DXnFQaKax2" target="_blank" class="map-btn"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
+                    </div>
                     <span class="event-info">營業時間：旺季 06:00 - 22:00</span>
                     <img src="天壇（祈年殿）.jpg" class="event-photo">
                 </div>
@@ -215,7 +259,10 @@
             <div class="itinerary-item">
                 <div class="dot-container"><div class="dot"></div></div>
                 <div class="content">
-                    <div class="event-title">前門大街</div>
+                    <div class="event-title">
+                        前門大街
+                        <a href="https://surl.amap.com/2neRbJY1laZ5" target="_blank" class="map-btn"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
+                    </div>
                     <span class="event-info">營業時間：約 08:00 - 22:00 (各店舖不同)</span>
                     <img src="前門大街.jpg" class="event-photo">
                 </div>
@@ -226,10 +273,7 @@
     <div class="day-section" id="day2">
         <div class="day-header">05.01</div>
         <div class="itinerary-list">
-            <div class="itinerary-item">
-                <div class="dot-container"><div class="dot"></div></div>
-                <div class="content"><div class="event-title">早餐</div></div>
-            </div>
+            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title">早餐</div></div></div>
             <div class="itinerary-item">
                 <div class="dot-container"><div class="dot"></div></div>
                 <div class="content">
@@ -240,7 +284,10 @@
             <div class="itinerary-item">
                 <div class="dot-container"><div class="dot"></div></div>
                 <div class="content">
-                    <div class="event-title">紫禁城 (故宮博物院)</div>
+                    <div class="event-title">
+                        紫禁城 (故宮博物院)
+                        <a href="https://surl.amap.com/h2Vgp70x61E" target="_blank" class="map-btn"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
+                    </div>
                     <span class="event-info">營業時間：08:30 - 17:00 (16:00 停止檢票)</span>
                     <span class="event-info">備註：每週一閉館</span>
                     <img src="北京故宮紫禁城.jpg" class="event-photo">
@@ -264,30 +311,50 @@
             <div class="itinerary-item">
                 <div class="dot-container"><div class="dot"></div></div>
                 <div class="content">
-                    <div class="event-title">InterContinental Beijing Sanlitun</div>
+                    <div class="event-title">
+                        InterContinental Beijing Sanlitun
+                        <a href="https://surl.amap.com/2qFFWyG1ibCV" target="_blank" class="map-btn"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
+                    </div>
                     <img src="三里屯洲際.jpg" class="event-photo">
                 </div>
             </div>
+            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title">下午茶時光</div><span class="event-info">營業時間：14:30 - 16:30</span><img src="洲際行政酒廊.jpg" class="event-photo"></div></div>
             <div class="itinerary-item">
                 <div class="dot-container"><div class="dot"></div></div>
                 <div class="content">
-                    <div class="event-title">下午茶時光</div>
-                    <span class="event-info">營業時間：14:30 - 16:30</span>
-                    <img src="洲際行政酒廊.jpg" class="event-photo">
+                    <div class="event-title">
+                        恭王府
+                        <a href="https://surl.amap.com/aQiylpM1d6v6" target="_blank" class="map-btn"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
+                    </div>
+                    <span class="event-info">營業時間：旺季 08:00 - 17:00</span>
+                    <img src="恭王府.jpg" class="event-photo">
                 </div>
             </div>
-            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title">恭王府</div><span class="event-info">營業時間：旺季 08:00 - 17:00</span><img src="恭王府.jpg" class="event-photo"></div></div>
             <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title">Happy Hour</div><span class="event-info">營業時間：18:00 - 20:00</span><img src="洲際行政酒廊.jpg" class="event-photo"></div></div>
             <div class="itinerary-item">
                 <div class="dot-container"><div class="dot"></div></div>
                 <div class="content">
-                    <div class="event-title">三里屯太古里</div>
+                    <div class="event-title">
+                        三里屯太古里
+                        <a href="https://surl.amap.com/1EkfizYsfSM" target="_blank" class="map-btn"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
+                    </div>
                     <span class="event-info">營業時間：10:00 - 22:00</span>
                     <span class="event-info">備註：三里屯酒吧街在 22:00 後仍會營業</span>
                     <img src="三里屯步行街.jpg" class="event-photo">
                 </div>
             </div>
-            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title">Destination Club</div><span class="event-info">營業時間：週五週六 21:00 - 05:00</span><span class="event-info">營業時間：週日至週四 21:00 - 03:00</span><img src="Destination Club.jpg" class="event-photo"></div></div>
+            <div class="itinerary-item">
+                <div class="dot-container"><div class="dot"></div></div>
+                <div class="content">
+                    <div class="event-title">
+                        Destination Club
+                        <a href="https://surl.amap.com/1VpInpoHgRX" target="_blank" class="map-btn"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
+                    </div>
+                    <span class="event-info">營業時間：週五週六 21:00 - 05:00</span>
+                    <span class="event-info">營業時間：週日至週四 21:00 - 03:00</span>
+                    <img src="Destination Club.jpg" class="event-photo">
+                </div>
+            </div>
         </div>
     </div>
 
@@ -297,8 +364,28 @@
             <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title">早餐</div></div></div>
             <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title">泳池＆SPA</div><img src="洲際泳池.jpg" class="event-photo"></div></div>
             <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title">下午茶時光</div><span class="event-info">營業時間：14:30 - 16:30</span><img src="洲際行政酒廊.jpg" class="event-photo"></div></div>
-            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title">什剎海 & 銀錠橋</div><span class="event-info">營業時間：全天開放</span><img src="什刹海（銀錠橋）.jpg" class="event-photo"></div></div>
-            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title">煙袋斜街</div><span class="event-info">營業時間：24小時開放</span><img src="煙袋斜街.jpg" class="event-photo"></div></div>
+            <div class="itinerary-item">
+                <div class="dot-container"><div class="dot"></div></div>
+                <div class="content">
+                    <div class="event-title">
+                        什剎海 & 銀錠橋
+                        <a href="https://surl.amap.com/h3FIt6K1AdON" target="_blank" class="map-btn"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
+                    </div>
+                    <span class="event-info">營業時間：全天開放</span>
+                    <img src="什刹海（銀錠橋）.jpg" class="event-photo">
+                </div>
+            </div>
+            <div class="itinerary-item">
+                <div class="dot-container"><div class="dot"></div></div>
+                <div class="content">
+                    <div class="event-title">
+                        煙袋斜街
+                        <a href="https://surl.amap.com/EhOtLIO7Lx" target="_blank" class="map-btn"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
+                    </div>
+                    <span class="event-info">營業時間：24小時開放</span>
+                    <img src="煙袋斜街.jpg" class="event-photo">
+                </div>
+            </div>
             <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title">Happy Hour</div><span class="event-info">營業時間：18:00 - 20:00</span><img src="洲際行政酒廊.jpg" class="event-photo"></div></div>
         </div>
     </div>
@@ -307,9 +394,29 @@
         <div class="day-header">05.04</div>
         <div class="itinerary-list">
             <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title">早餐</div></div></div>
-            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title">雍和宮</div><span class="event-info">營業時間：09:00 - 16:30</span><img src="雍和宮.jpg" class="event-photo"></div></div>
+            <div class="itinerary-item">
+                <div class="dot-container"><div class="dot"></div></div>
+                <div class="content">
+                    <div class="event-title">
+                        雍和宮
+                        <a href="https://surl.amap.com/4blqS661g2GX" target="_blank" class="map-btn"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
+                    </div>
+                    <span class="event-info">營業時間：09:00 - 16:30</span>
+                    <img src="雍和宮.jpg" class="event-photo">
+                </div>
+            </div>
             <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title">下午茶時光</div><span class="event-info">營業時間：14:30 - 16:30</span><img src="洲際行政酒廊.jpg" class="event-photo"></div></div>
-            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title">頤和園</div><span class="event-info">營業時間：旺季 06:00 - 20:00</span><img src="頤和園.jpg" class="event-photo"></div></div>
+            <div class="itinerary-item">
+                <div class="dot-container"><div class="dot"></div></div>
+                <div class="content">
+                    <div class="event-title">
+                        頤和園
+                        <a href="https://surl.amap.com/6OR83WZt4LY" target="_blank" class="map-btn"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
+                    </div>
+                    <span class="event-info">營業時間：旺季 06:00 - 20:00</span>
+                    <img src="頤和園.jpg" class="event-photo">
+                </div>
+            </div>
             <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title">Happy Hour</div><span class="event-info">營業時間：18:00 - 20:00</span><img src="洲際行政酒廊.jpg" class="event-photo"></div></div>
         </div>
     </div>
@@ -326,16 +433,14 @@
 </div>
 
 <script>
-    // 1. 強制設定滾動恢復為手動
     if ('scrollRestoration' in history) {
         history.scrollRestoration = 'manual';
     }
 
-    // 2. 導航跳轉函數
     function scrollToDay(dayId) {
         const element = document.getElementById(dayId);
         if (element) {
-            const offset = 80; // 避開導航欄
+            const offset = 80;
             const bodyRect = document.body.getBoundingClientRect().top;
             const elementRect = element.getBoundingClientRect().top;
             const elementPosition = elementRect - bodyRect;
@@ -348,12 +453,10 @@
         }
     }
 
-    // 3. 頁面載入邏輯
     window.addEventListener('load', function() {
-        // 延遲 50 毫秒確保瀏覽器渲染完成
         setTimeout(() => {
             window.scrollTo(0, 0);
-            document.body.style.opacity = "1"; // 顯示頁面
+            document.body.style.opacity = "1";
         }, 50);
     });
 </script>
