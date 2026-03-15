@@ -13,6 +13,7 @@
             --info-text: #999;
         }
 
+        /* 平滑捲動 */
         html {
             scroll-behavior: smooth;
         }
@@ -53,6 +54,7 @@
             color: var(--accent-green);
         }
 
+        /* Banner 圖片樣式 */
         .header-banner {
             width: 100%;
             height: auto;
@@ -61,7 +63,7 @@
             display: block;
         }
 
-        /* 導航按鈕樣式 */
+        /* 導航按鈕樣式 - 強制單排對齊 */
         .nav-bar {
             position: sticky;
             top: 0;
@@ -78,7 +80,9 @@
             scrollbar-width: none;
         }
         
-        .nav-bar::-webkit-scrollbar { display: none; }
+        .nav-bar::-webkit-scrollbar {
+            display: none;
+        }
 
         .nav-btn {
             cursor: pointer;
@@ -99,34 +103,11 @@
             color: white;
         }
 
-        /* 地圖圓形按鈕樣式 */
-        .map-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 24px;
-            height: 24px;
-            background-color: var(--accent-green);
-            border-radius: 50%;
-            margin-left: 8px;
-            vertical-align: middle;
-            text-decoration: none;
-            transition: transform 0.2s;
-        }
-
-        .map-btn:active {
-            transform: scale(0.9);
-        }
-
-        .map-icon {
-            width: 14px;
-            height: 14px;
-            fill: white;
-        }
-
+        /* 日期區塊 */
         .day-section {
             padding: 50px 30px; 
             border-bottom: 1px solid var(--line-color);
+            scroll-margin-top: 80px;
         }
 
         .day-header {
@@ -145,7 +126,9 @@
             position: relative;
         }
 
-        .itinerary-item { display: contents; }
+        .itinerary-item {
+            display: contents;
+        }
 
         .dot-container {
             grid-column: 1;
@@ -173,23 +156,70 @@
             z-index: 1;
         }
 
-        .day-section .itinerary-item:last-child .dot-container::after { display: none; }
+        .day-section .itinerary-item:last-child .dot-container::after {
+            display: none;
+        }
 
+        /* 修正核心：景點標題與地圖按鈕佈局 */
         .content {
             grid-column: 2;
             padding-bottom: 30px;
             padding-right: 30px;
         }
 
-        .event-title { 
-            font-size: 1.1rem; 
-            font-weight: 600; 
-            margin-bottom: 4px; 
+        .event-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            /* 開啟 Flex 佈局，讓文字與按鈕分居兩側 */
             display: flex;
+            justify-content: space-between;
             align-items: center;
+            /* 針對英文名字酒店的特別保護 */
+            overflow: hidden; /* 確保內容不會溢出 */
+            gap: 15px; /* 文字與按鈕之間的最小間距 */
         }
 
-        .event-info { font-size: 0.9rem; color: var(--info-text); display: block; line-height: 1.4; }
+        .event-text {
+            /* 文字部分：遇到長檔名強制折行 */
+            flex-grow: 1; /* 佔用所有剩餘空間 */
+            word-wrap: break-word; /* 強制單字折行 (如果單字本身過長) */
+            overflow-wrap: break-word; /* 支援現代瀏覽器折行 */
+            display: inline-block; /* 讓折行行為更自然 */
+        }
+
+        /* 地圖圓形按鈕樣式 - 強制不變形 */
+        .map-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            background-color: var(--accent-green);
+            border-radius: 50%;
+            vertical-align: middle;
+            text-decoration: none;
+            transition: transform 0.2s;
+            /* 修正核心：強制按鈕寬度不變形 */
+            flex-shrink: 0; /* 禁止被 Flex 佈局擠壓縮小 */
+        }
+
+        .map-btn:active {
+            transform: scale(0.9);
+        }
+
+        .map-icon {
+            width: 14px;
+            height: 14px;
+            fill: white;
+        }
+
+        .event-info {
+            font-size: 0.9rem;
+            color: var(--info-text);
+            display: block;
+            line-height: 1.4;
+        }
 
         .event-photo {
             width: 100%;
@@ -202,7 +232,12 @@
         }
 
         footer {
-            text-align: center; font-size: 0.8rem; color: #CCC; padding: 60px 30px; letter-spacing: 2px; background-color: #fcfbf8;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #CCC;
+            padding: 60px 30px;
+            letter-spacing: 2px;
+            background-color: #fcfbf8;
         }
     </style>
 </head>
@@ -239,7 +274,7 @@
                 <div class="dot-container"><div class="dot"></div></div>
                 <div class="content">
                     <div class="event-title">
-                        JW Marriott Hotel Beijing Central
+                        <span class="event-text">JW Marriott Hotel Beijing Central</span>
                         <a href="https://surl.amap.com/gZRGr0WEaOn" target="_blank" class="map-btn"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
                     </div>
                     <img src="JW Beijing.jpg" class="event-photo">
@@ -249,7 +284,7 @@
                 <div class="dot-container"><div class="dot"></div></div>
                 <div class="content">
                     <div class="event-title">
-                        天壇公園
+                        <span class="event-text">天壇公園</span>
                         <a href="https://surl.amap.com/8DXnFQaKax2" target="_blank" class="map-btn"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
                     </div>
                     <span class="event-info">營業時間：旺季 06:00 - 22:00</span>
@@ -260,7 +295,7 @@
                 <div class="dot-container"><div class="dot"></div></div>
                 <div class="content">
                     <div class="event-title">
-                        前門大街
+                        <span class="event-text">前門大街</span>
                         <a href="https://surl.amap.com/2neRbJY1laZ5" target="_blank" class="map-btn"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
                     </div>
                     <span class="event-info">營業時間：約 08:00 - 22:00 (各店舖不同)</span>
@@ -285,7 +320,7 @@
                 <div class="dot-container"><div class="dot"></div></div>
                 <div class="content">
                     <div class="event-title">
-                        紫禁城 (故宮博物院)
+                        <span class="event-text">紫禁城 (故宮博物院)</span>
                         <a href="https://surl.amap.com/h2Vgp70x61E" target="_blank" class="map-btn"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
                     </div>
                     <span class="event-info">營業時間：08:30 - 17:00 (16:00 停止檢票)</span>
@@ -312,7 +347,7 @@
                 <div class="dot-container"><div class="dot"></div></div>
                 <div class="content">
                     <div class="event-title">
-                        InterContinental Beijing Sanlitun
+                        <span class="event-text">InterContinental Beijing Sanlitun</span>
                         <a href="https://surl.amap.com/2qFFWyG1ibCV" target="_blank" class="map-btn"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
                     </div>
                     <img src="三里屯洲際.jpg" class="event-photo">
@@ -323,7 +358,7 @@
                 <div class="dot-container"><div class="dot"></div></div>
                 <div class="content">
                     <div class="event-title">
-                        恭王府
+                        <span class="event-text">恭王府</span>
                         <a href="https://surl.amap.com/aQiylpM1d6v6" target="_blank" class="map-btn"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
                     </div>
                     <span class="event-info">營業時間：旺季 08:00 - 17:00</span>
@@ -335,7 +370,7 @@
                 <div class="dot-container"><div class="dot"></div></div>
                 <div class="content">
                     <div class="event-title">
-                        三里屯太古里
+                        <span class="event-text">三里屯太古里</span>
                         <a href="https://surl.amap.com/1EkfizYsfSM" target="_blank" class="map-btn"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
                     </div>
                     <span class="event-info">營業時間：10:00 - 22:00</span>
@@ -347,7 +382,7 @@
                 <div class="dot-container"><div class="dot"></div></div>
                 <div class="content">
                     <div class="event-title">
-                        Destination Club
+                        <span class="event-text">Destination Club</span>
                         <a href="https://surl.amap.com/1VpInpoHgRX" target="_blank" class="map-btn"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
                     </div>
                     <span class="event-info">營業時間：週五週六 21:00 - 05:00</span>
@@ -368,7 +403,7 @@
                 <div class="dot-container"><div class="dot"></div></div>
                 <div class="content">
                     <div class="event-title">
-                        什剎海 & 銀錠橋
+                        <span class="event-text">什剎海 & 銀錠橋</span>
                         <a href="https://surl.amap.com/h3FIt6K1AdON" target="_blank" class="map-btn"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
                     </div>
                     <span class="event-info">營業時間：全天開放</span>
@@ -379,7 +414,7 @@
                 <div class="dot-container"><div class="dot"></div></div>
                 <div class="content">
                     <div class="event-title">
-                        煙袋斜街
+                        <span class="event-text">煙袋斜街</span>
                         <a href="https://surl.amap.com/EhOtLIO7Lx" target="_blank" class="map-btn"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
                     </div>
                     <span class="event-info">營業時間：24小時開放</span>
@@ -398,7 +433,7 @@
                 <div class="dot-container"><div class="dot"></div></div>
                 <div class="content">
                     <div class="event-title">
-                        雍和宮
+                        <span class="event-text">雍和宮</span>
                         <a href="https://surl.amap.com/4blqS661g2GX" target="_blank" class="map-btn"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
                     </div>
                     <span class="event-info">營業時間：09:00 - 16:30</span>
@@ -410,7 +445,7 @@
                 <div class="dot-container"><div class="dot"></div></div>
                 <div class="content">
                     <div class="event-title">
-                        頤和園
+                        <span class="event-text">頤和園</span>
                         <a href="https://surl.amap.com/6OR83WZt4LY" target="_blank" class="map-btn"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
                     </div>
                     <span class="event-info">營業時間：旺季 06:00 - 20:00</span>
