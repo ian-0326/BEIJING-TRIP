@@ -31,7 +31,7 @@
         .subtitle { text-transform: uppercase; font-size: 0.8rem; letter-spacing: 3px; color: var(--accent-green); }
         .header-banner { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; display: block; }
 
-        /* 1. 語言轉換小圓圈 - 恢復國旗 */
+        /* 語言轉換小圓圈 */
         .lang-switch-fixed {
             position: fixed;
             top: 20px;
@@ -52,7 +52,7 @@
         }
         .lang-switch-fixed:active { transform: scale(0.9); }
 
-        /* 2. 景點 TIP 彈窗 */
+        /* 景點 TIP 彈窗 */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -75,7 +75,7 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
         .modal-tip-title { font-weight: bold; color: var(--accent-green); margin-bottom: 15px; font-size: 1.2rem; text-align: center; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-        .modal-tip-text { font-size: 0.9rem; color: #555; line-height: 1.7; white-space: pre-wrap; }
+        .modal-tip-text { font-size: 0.9rem; color: #555; line-height: 1.8; white-space: pre-wrap; }
 
         /* 導航欄 */
         .nav-bar {
@@ -109,7 +109,6 @@
         }
         .nav-btn.active { background-color: var(--accent-green); color: white; }
 
-        /* 行程內容排版 */
         .day-section { padding: 50px 30px; border-bottom: 1px solid var(--line-color); scroll-margin-top: 80px; }
         .day-header { font-size: 1.2rem; background-color: var(--accent-green); color: white; display: inline-block; padding: 5px 25px; margin-bottom: 30px; letter-spacing: 2px; }
 
@@ -222,12 +221,12 @@
             <div class="itinerary-item">
                 <div class="dot-container"><div class="dot"></div></div>
                 <div class="content">
-                    <div class="event-title" onclick="showTip('GUGONG', '故宮')">
+                    <div class="event-title" onclick="showTip('GUGONG', '紫禁城 (故宮博物院)')">
                         <span class="event-text" data-zh="紫禁城 (故宮博物院)" data-ko="자금성 (고궁박물원)">紫禁城 (故宮博物院)</span>
                         <a href="https://surl.amap.com/h2Vgp70x61E" target="_blank" class="map-btn" onclick="event.stopPropagation()"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
                     </div>
                     <span class="event-info" data-zh="營業時間：08:30 - 17:00 (週一閉館)" data-ko="영업시간: 08:30 - 17:00 (월요일 휴관)">營業時間：08:30 - 17:00 (週一閉館)</span>
-                    <img src="北京故宮紫禁城.jpg" class="event-photo" onclick="showTip('GUGONG', '故宮')">
+                    <img src="北京故宮紫禁城.jpg" class="event-photo" onclick="showTip('GUGONG', '紫禁城 (故宮博物院)')">
                 </div>
             </div>
             <div class="itinerary-item">
@@ -249,7 +248,7 @@
                 <div class="dot-container"><div class="dot"></div></div>
                 <div class="content">
                     <div class="event-title" onclick="showTip('IC', 'InterContinental')">
-                        <span class="event-text" data-zh="InterContinental Beijing Sanlitun" data-ko="인터컨티넨탈 베이징 산리툰">InterContinental Beijing Sanlitun</span>
+                        <span class="event-text" data-zh="InterContinental Beijing Sanlitun" data-ko="인터컨提넨탈 베이징 산리툰">InterContinental Beijing Sanlitun</span>
                         <a href="https://surl.amap.com/2qFFWyG1ibCV" target="_blank" class="map-btn" onclick="event.stopPropagation()"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
                     </div>
                     <img src="三里屯洲際.jpg" class="event-photo" onclick="showTip('IC', 'InterContinental')">
@@ -278,7 +277,7 @@
                 <div class="dot-container"><div class="dot"></div></div>
                 <div class="content">
                     <div class="event-title" data-zh="Happy Hour" data-ko="해피아워">Happy Hour</div>
-                    <span class="event-info" data-zh="營業時間：18:00 - 20:00" data-ko="시간: 18:00 - 20:00">營業時間：18:00 - 20:00</span>
+                    <span class="event-info" data-zh="營業時間：18:00 - 20:00" data-ko="時間: 18:00 - 20:00">營業時間：18:00 - 20:00</span>
                     <img src="洲際行政酒廊.jpg" class="event-photo">
                 </div>
             </div>
@@ -416,8 +415,8 @@
         'TT': { zh: '建議早點去，避開旅行團。迴音壁目前不一定開放。', ko: '단체 관광객을 피하려면 아침 일찍 가는 것을 추천합니다.' },
         'QM': { zh: '可以坐有軌電車「叮叮車」，推薦品嚐大柵欄老字號。', ko: '트램인 딩딩차를 타보세요. 다스란의 오래된 맛집을 추천합니다.' },
         'GUGONG': { 
-            zh: '紫禁城（故宮）是世界上規模面積最大的皇家古建築群，曾有24位明清皇帝在此居住。整體區域主要劃分為「前朝」與「後寢」兩大部分：前朝宏偉莊嚴，是皇帝處理朝政與舉行大典的工作區；後寢則精緻細膩，是皇室生活的區域。\n\n- 入口與廣場建築\n午門：中間的「御路門」是皇帝專用通道。大臣在此受「廷杖」而非斬首。\n太和門：皇帝早朝進行「御門聽政」的場所。\n\n- 前朝兩側建築\n武英殿（西）：陶瓷館。文華殿（東）：書畫館。文淵閣：皇家藏書樓，唯一黑琉璃瓦建築（水剋火）。\n\n- 前朝三大殿\n太和殿：規格最高，舉行重大典禮。中和殿：皇帝休息區。保和殿：殿試場所，後方有雲龍石雕。\n\n- 後寢區（內廷）\n乾清宮：曾為皇帝寢宮，懸掛「正大光明」匾額。交泰殿與坤寧宮：存放印璽與生活區。慈寧宮：太后生活區域。東西六宮：嬪妃居住地。延禧宮：內有未建成的「水晶宮」。\n\n- 特殊景點\n鐘錶館：精美西洋鐘錶。珍寶館：乾隆花園與九龍壁。暢音閣：大型戲台。珍妃井：珍妃罹難處。御花園：皇家遊賞花園。神武門：故宮北門，可眺望景山與俯瞰宮殿。', 
-            ko: '자금성(고궁)은 세계 최대 규모의 황실 건축물로, 명청 시대 24명의 황제가 거주했습니다. 크게 정치를 돌보던 \'외조\'와 생활 공간인 \'내정\'으로 나뉩니다.\n\n- 입구 및 광장\n오문: 황제 전용 통로. 태화문: 정사를 논하던 장소.\n\n- 전조 양측\n무영전: 도자기관. 문화전: 서화관. 문연각: 황실 도서관 (방화를 기원하는 검은 기와).\n\n- 전조 3대전\n태화전: 최대 규모, 국가 행사 장소. 중화전: 황제 휴식처. 보화전: 과거 시험 장소.\n\n- 내정 영역\n건청궁: 황제의 침전, \'정대광명\' 편액. 교태전 & 곤녕궁: 인장 보관 및 생활 공간. 자녕궁: 대비의 거처. 동서6궁: 후궁들의 거처. 연희궁: 미완성 \'수정궁\' 소재.\n\n- 특수 명소\n시계관: 정교한 서양 시계. 진보관: 건륭화원 및 구룡벽. 창음각: 대형 희대. 진비정: 광서제 진비가 빠진 우물. 어화원: 황실 정원. 신무문: 자금성 북문, 경산공원 조망 가능.' 
+            zh: '紫禁城（故宮）是世界上規模面積最大的皇家古建築群，曾有24位明清皇帝在此居住。整體區域主要劃分為「前朝」與「後寢」兩大部分：前朝宏偉莊嚴，是皇帝處理朝政與舉行大典的工作區；後寢則精緻細膩，是皇室生活的區域。\n\n入口與廣場建築\n- 午門：故宮的正門，設有三個門洞。中間的「御路門」是皇帝專用的出入通道，宗室王公走西門，文武官員走東門。明朝時期，得罪皇帝的大臣會被押到午門外進行「廷杖」懲罰，而非民間戲曲常說的「推出午門斬首」。\n- 太和門：明朝時又稱大朝門，是皇帝早朝進行「御門聽政」的場所，明代有三位皇帝曾在此登基。\n\n📍 前朝兩側建築\n- 武英殿（西側）：明初修建，皇帝曾在此齋戒及召見大臣；1644年李自成攻入紫禁城時也曾在此駐紮。現今作為故宮的「陶瓷館」，常設展出各朝代的精美瓷器。\n- 文華殿（東側）：現今被稱為故宮的「書畫館」，舉辦許多書畫展覽。\n- 文淵閣：位於文華殿後方，是皇家的藏書樓。為了祈求防火，它是故宮中唯一不使用紅牆黃瓦，而是採用黑色琉璃瓦的建築（因五行中黑色屬水，有以水剋火的寓意）。\n\n前朝三大殿（建於高台之上）\n- 太和殿（俗稱金鑾殿）：紫禁城內規模最大、等級最高的建築，屋頂邊角擁有最高規格的十個脊獸。這裡並非平時上朝的地方，而是專門用來舉行皇帝登基、大婚等重大典禮的場所。明代原稱「奉天殿」，但在朱棣遷都北京當年就曾被雷電擊中引發大火。\n- 中和殿：體量較小，主要功用是供皇帝前往太和殿舉行大典前休息。\n- 保和殿：明代稱為「謹身殿」，大典前皇帝會在此更衣；清代順治、康熙皇帝曾在此短暫居住。乾隆54年以後，這裡成為皇帝親自主持科舉「殿試」的場所。殿後方有一塊重達250噸、雕刻精美的「雲龍石雕」，當年動用了上萬民夫才運送進宮。\n\n後寢區（內廷）\n- 養心殿：清朝自雍正皇帝後改以此為正式寢宮與辦公處，也是垂簾聽政與簽署退位詔書的發生地。\n- 乾清宮：內廷規模最大的宮殿，明代至清康熙時期都是皇帝的寢宮。為了防範刺客，殿內設有9間暖閣與27張床位，連親信都不知道皇帝當晚睡在哪。皇帝駕崩後需在此停靈27天以示「壽終正寢」；殿內懸掛著名的「正大光明」匾額，匾額後方曾用於隱藏寫有皇位繼承人名字的建儲匣。\n- 交泰殿與坤寧宮：交泰殿內部呈正方形，殿內設有寶座，並用於存放皇帝的印璽。\n- 慈寧宮與慈寧宮花園：明清兩代皇太后居住與生活的區域。慈寧宮主要用於為太后舉行重大典禮（如萬壽節、上徽號等）；花園則為了滿足太后禮佛、供佛的需求而設。\n- 東西六宮：嬪妃們居住的院落，通常為一正殿兩配殿的格局。\n- 永壽宮：現今主要用於展出中國古建築的彩畫工藝。\n- 延禧宮：歷史上曾發生多次火災，地位較不受重視。院內有一座因宣統帝溥儀退位而未能建成的西洋式「水晶宮」（原構想以玻璃為牆壁與地板，內部注水養魚）。\n\n單獨收費展區與特殊景點\n- 鐘錶館（奉先殿）：收藏了約1500件清代宮廷製造與西洋進口的各國精美鐘錶，包括會定時開門報時的機關鐘錶。\n- 珍寶館（寧壽宮區）：這區是乾隆皇帝為了自己退位養養而下令擴修的場所（又稱乾隆花園），耗時五年建成，但乾隆最終並未在此居住。\n- 皇極殿：寧壽宮區的正殿，兩側連廊現為珍寶館，展出400多件清宮精美玉雕、寶石、翠鳥羽毛製成的點翠飾品與金銀器。\n- 九龍壁：由270塊琉璃磚拼成，為中國三大九龍壁之一。\n- 暢音閣：分為上中下三層的大型戲台，節慶時用於聽戲。\n- 珍妃井：傳說慈禧太后西逃前，命人將光緒帝的珍妃推入此井中淹死。\n- 御花園：位於中軸線最北端，是皇帝與皇后遊賞的花園。面積雖小但花木繁盛，內有天花板雕刻盤龍藻井的「萬春亭」，以及用太湖石堆疊而成的「堆秀山」。\n- 神武門：故宮的最北門，常設有免費展覽，登頂後可向北眺望景山的萬春亭，向南俯瞰大半個故宮與角樓。', 
+            ko: '자금성(고궁)은 세계 최대 규모의 황실 건축물로, 명청 시대 24명의 황제가 거주했습니다.\n\n정치 영역(외조)\n- 오문: 황제 전용 통로인 중앙문 소재.\n- 태화문: 조참을 거행하던 장소.\n- 태화전: 국가적 대전례가 열리던 가장 높은 등급의 전각.\n\n생활 영역(내정)\n- 양심전: 옹정제 이후 황제의 공식 침전 및 집무실.\n- 건청궁: 명~청 초기 황제의 침전, \'정대광명\' 편액 소재.\n- 자녕궁: 황태후의 생활 공간.\n- 동서6궁: 후궁들의 거처.\n\n특수 구역\n- 시계관: 황실 수집 정교한 시계 전시.\n- 진보관: 건륭화원, 구룡벽 및 황실 보물 전시.\n- 어화원: 황실 전용 정원.\n- 신무문: 자금성의 북문, 경산공원 조망 가능.' 
         },
         'IC': { zh: '三里屯地標，視野極佳。房間內可見太古里。', ko: '산리툰의 랜드마크. 객실에서 타이쿠리가 보입니다.' },
         'GWF': { zh: '清代規模最大的王府，花園部分非常精緻。', ko: '청나라 최대 규모의 왕부로, 정원이 매우 아름답습니다.' },
@@ -435,7 +434,6 @@
         document.querySelectorAll('[data-zh]').forEach(el => { 
             el.textContent = el.getAttribute(`data-${currentLang}`); 
         });
-        // 恢復國旗切換邏輯
         document.getElementById('langFlag').textContent = currentLang === 'zh' ? '🇰🇷' : '🇹🇼';
     }
 
