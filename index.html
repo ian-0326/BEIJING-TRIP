@@ -22,7 +22,6 @@
             margin: 0;
             padding: 0;
             line-height: 1.6;
-            /* 移除 opacity: 0，確保網頁絕對會顯示 */
         }
 
         .container { width: 100%; background: #fff; padding: 0; }
@@ -105,6 +104,12 @@
             background: none;
         }
 
+        /* 選取後的按鈕樣式 */
+        .nav-btn.active {
+            background-color: var(--accent-green);
+            color: white;
+        }
+
         .day-section { padding: 50px 30px; border-bottom: 1px solid var(--line-color); scroll-margin-top: 80px; }
         .day-header { font-size: 1.2rem; background-color: var(--accent-green); color: white; display: inline-block; padding: 5px 25px; margin-bottom: 30px; letter-spacing: 2px; }
 
@@ -157,12 +162,12 @@
     <img src="BEIJINJ1.jpg" alt="banner" class="header-banner">
 
     <nav class="nav-bar">
-        <div onclick="scrollToDay('day1')" class="nav-btn">DAY 1</div>
-        <div onclick="scrollToDay('day2')" class="nav-btn">DAY 2</div>
-        <div onclick="scrollToDay('day3')" class="nav-btn">DAY 3</div>
-        <div onclick="scrollToDay('day4')" class="nav-btn">DAY 4</div>
-        <div onclick="scrollToDay('day5')" class="nav-btn">DAY 5</div>
-        <div onclick="scrollToDay('day6')" class="nav-btn">DAY 6</div>
+        <div onclick="scrollToDay('day1', this)" class="nav-btn active">DAY 1</div>
+        <div onclick="scrollToDay('day2', this)" class="nav-btn">DAY 2</div>
+        <div onclick="scrollToDay('day3', this)" class="nav-btn">DAY 3</div>
+        <div onclick="scrollToDay('day4', this)" class="nav-btn">DAY 4</div>
+        <div onclick="scrollToDay('day5', this)" class="nav-btn">DAY 5</div>
+        <div onclick="scrollToDay('day6', this)" class="nav-btn">DAY 6</div>
     </nav>
 
     <div class="day-section" id="day1">
@@ -438,10 +443,15 @@
 
     function closeModal() { document.getElementById('modalOverlay').style.display = 'none'; }
 
-    // 關鍵修復：強制回到頂部且不影響顯示
     if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
     
-    function scrollToDay(dayId) {
+    // 選取狀態切換邏輯
+    function scrollToDay(dayId, btn) {
+        // 切換按鈕樣式
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        // 滾動到指定位置
         const element = document.getElementById(dayId);
         if (element) {
             const offset = 80;
@@ -452,7 +462,6 @@
     }
 
     window.addEventListener('load', function() {
-        // 延遲一下確保瀏覽器定位完成後再強行拉回頂部
         setTimeout(() => {
             window.scrollTo(0, 0);
         }, 10);
