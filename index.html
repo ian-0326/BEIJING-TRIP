@@ -2,481 +2,852 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>北京奢華散策 - 個人旅行手冊</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>BLACKBOX | 會員中心</title>
+    
+    <link rel="icon" type="image/jpeg" href="https://blackboxrepair.github.io/membership/icon.jpg?v=2">
+    <link rel="shortcut icon" type="image/jpeg" href="https://blackboxrepair.github.io/membership/icon.jpg?v=2">
+    <link rel="apple-touch-icon" href="https://blackboxrepair.github.io/membership/icon.jpg?v=2">
+    <link rel="apple-touch-icon-precomposed" href="https://blackboxrepair.github.io/membership/icon.jpg?v=2">
+
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
     <style>
-        :root {
-            --bg-color: #F9F7F2;
-            --main-text: #4A4A4A;
-            --accent-green: #7D8E7E;
-            --line-color: #D1CEC7;
-            --info-text: #999;
+        /* 基礎設定 */
+        html, body { 
+            font-family: 'Noto Sans TC', sans-serif;
+            background: linear-gradient(180deg, #EDF2F7 0%, #F3F5F7 300px, #F3F5F7 100%);
+            color: #191F28; 
+            overscroll-behavior: none;
+            touch-action: pan-y;
+            height: 100dvh; width: 100%;
+            overflow: hidden; 
+            position: fixed;
         }
-
-        html { scroll-behavior: smooth; }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--main-text);
-            font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
+        
+        #app { height: 100%; width: 100%; display: flex; flex-direction: column; }
+        
+        .content-scroll { 
+            flex: 1; 
+            overflow-y: auto; 
+            -webkit-overflow-scrolling: touch; 
+            padding-bottom: calc(40px + env(safe-area-inset-bottom)); 
+            padding-top: 4px;
         }
-
-        /* 鎖定底層捲動 */
-        body.modal-open {
+        .content-scroll::-webkit-scrollbar { display: none; }
+        
+        .tab-content { display: none; opacity: 0; transition: opacity 0.3s ease-in-out; height: 100%; }
+        .tab-content.active { display: block; opacity: 1; }
+        
+        /* 會員卡面設計 */
+        .card-black-gold { 
+            background-image: url('Card.png'); 
+            background-size: cover;          
+            background-repeat: no-repeat;    
+            background-position: center;     
+            box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.15); 
+            border-radius: 14px; 
+            min-height: 180px; 
+            position: relative;
+            padding: 28px;
             overflow: hidden;
-            position: fixed;
-            width: 100%;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        
+        .click-wrapper:active .card-black-gold {
+            transform: scale(0.97);
+            box-shadow: 0 4px 15px -5px rgba(0, 0, 0, 0.1); 
         }
 
-        .container { width: 100%; background: #fff; padding: 0; }
-
-        header { text-align: center; padding: 40px 30px 20px 30px; }
-        h1 { font-size: 1.8rem; letter-spacing: 8px; margin: 10px 0; font-weight: 300; }
-        .subtitle { text-transform: uppercase; font-size: 0.8rem; letter-spacing: 3px; color: var(--accent-green); }
-        .header-banner { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; display: block; }
-
-        .lang-switch-fixed {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 200;
-            background: white;
-            border: 1px solid var(--line-color);
-            border-radius: 50%;
-            width: 44px;
-            height: 44px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            transition: transform 0.2s;
+        .rank-badge { 
+            background: rgba(255, 255, 255, 0.08); 
+            backdrop-filter: blur(8px); 
+            display: flex; align-items: center; justify-content: center; 
+            padding: 6px 14px;
+            border-radius: 12px;
         }
-        .lang-switch-fixed:active { transform: scale(0.9); }
 
-        /* 彈窗樣式優化 */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6);
+        .toss-card {
+            background: #ffffff;
+            border-radius: 14px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+            padding: 24px;
+        }
+
+        .soft-input { 
+            background-color: #F2F4F6; 
+            border: none; 
+            border-radius: 16px; 
+            padding: 16px; 
+            font-size: 16px; 
+            font-weight: 500;
+            color: #191F28;
+            width: 100%; 
+            outline: none; 
+            appearance: none; 
+            -webkit-appearance: none; 
+            transition: background 0.2s;
+        }
+        .soft-input:focus { background-color: #E5E8EB; }
+        .locked-input { background-color: #F2F4F6; color: #8B95A1; cursor: not-allowed; }
+
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(6px); z-index: 1000; padding: 20px; align-items: center; justify-content: center; animation: fadeIn 0.2s ease-out; }
+        .msg-modal-content { background: white; border-radius: 32px; padding: 32px 24px; text-align: center; width: 100%; max-width: 320px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+
+        /* 深色底部條碼彈窗 */
+        .bottom-sheet-overlay {
             display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            backdrop-filter: blur(3px);
-            touch-action: none; /* 防止滑動穿透 */
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            z-index: 2500;
+            flex-direction: column;
+            justify-content: flex-end; 
         }
-        .modal-content {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            width: 85%;
-            max-width: 400px;
-            max-height: 75vh;
+
+        .bottom-sheet-content {
+            background-color: #242426; 
+            width: 100%;
+            border-radius: 28px 28px 0 0;
+            padding: 16px 24px calc(32px + env(safe-area-inset-bottom)); 
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.2);
+            max-height: 95vh;
             overflow-y: auto;
-            text-align: left;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            -webkit-overflow-scrolling: touch;
+            transform: translateY(100%);
         }
-        .modal-tip-title { font-weight: bold; color: var(--accent-green); margin-bottom: 15px; font-size: 1.2rem; text-align: center; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-        .modal-tip-text { font-size: 0.9rem; color: #555; line-height: 1.8; white-space: pre-wrap; }
 
-        /* 導航欄 */
-        .nav-bar {
-            position: sticky;
-            top: 0;
-            background: rgba(255, 255, 255, 0.98);
-            padding: 15px 20px;
-            display: flex;
-            justify-content: center; 
-            overflow-x: auto; 
-            -webkit-overflow-scrolling: touch;
-            gap: 12px;
-            z-index: 100;
-            border-bottom: 1px solid var(--line-color);
-            scrollbar-width: none;
+        /* 票券頁面全螢幕滑動動畫 */
+        .modal-slide-in { transform: translateY(0%); pointer-events: auto; }
+        .modal-slide-out { transform: translateY(100%); pointer-events: none; }
+
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        @keyframes slideDown { from { transform: translateY(0); } to { transform: translateY(100%); } }
+        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .sheet-handle { width: 36px; height: 5px; background-color: #555555; border-radius: 3px; margin: 0 auto 20px; }
+        .qr-wrapper { background-color: #ffffff; padding: 16px; border-radius: 16px; display: inline-block; margin: 16px 0 32px; border: 1px solid rgba(255,255,255,0.1); }
+        .select-wrapper { position: relative; width: 100%; }
+        .select-wrapper::after { 
+            content: ''; 
+            position: absolute; 
+            right: 16px; 
+            top: 50%; 
+            transform: translateY(-50%); 
+            width: 0; 
+            height: 0; 
+            border-left: 5px solid transparent; 
+            border-right: 5px solid transparent; 
+            border-top: 6px solid #8B95A1; 
+            pointer-events: none; 
         }
-        .nav-bar::-webkit-scrollbar { display: none; }
-
-        .nav-btn {
-            cursor: pointer;
-            color: var(--accent-green);
-            font-size: 0.8rem;
-            font-weight: 600;
-            padding: 8px 18px;
-            border: 1px solid var(--accent-green);
-            border-radius: 20px;
-            transition: all 0.3s;
-            white-space: nowrap;
-            flex-shrink: 0;
-            background: none;
-        }
-        .nav-btn.active { background-color: var(--accent-green); color: white; }
-
-        .day-section { padding: 50px 30px; border-bottom: 1px solid var(--line-color); scroll-margin-top: 80px; }
-        .day-header { font-size: 1.2rem; background-color: var(--accent-green); color: white; display: inline-block; padding: 5px 25px; margin-bottom: 30px; letter-spacing: 2px; }
-
-        .itinerary-list { display: grid; grid-template-columns: 30px 1fr; position: relative; }
-        .itinerary-item { display: contents; }
-        .dot-container { grid-column: 1; display: flex; justify-content: center; position: relative; padding-top: 8px; }
-        .dot { width: 8px; height: 8px; background-color: var(--accent-green); border-radius: 50%; z-index: 2; }
-        .dot-container::after { content: ""; position: absolute; top: 15px; bottom: -15px; width: 1px; background-color: var(--line-color); z-index: 1; }
-        .day-section .itinerary-item:last-child .dot-container::after { display: none; }
-
-        .content { grid-column: 2; padding-bottom: 30px; padding-right: 30px; }
-        .event-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center; gap: 15px; cursor: pointer; }
-        .event-text { flex-grow: 1; word-wrap: break-word; }
-
-        .map-btn { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; background-color: var(--accent-green); border-radius: 50%; flex-shrink: 0; text-decoration: none; }
-        .map-icon { width: 14px; height: 14px; fill: white; }
-
-        .event-info { font-size: 0.85rem; color: var(--info-text); display: block; line-height: 1.4; margin-bottom: 5px; }
-        .event-photo { width: 100%; max-width: 800px; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 4px; margin: 10px 0; background-color: #eee; cursor: pointer; }
-
-        footer { text-align: center; font-size: 0.8rem; color: #CCC; padding: 60px 30px; letter-spacing: 2px; background-color: #fcfbf8; }
+        iframe { border: none; width: 100%; height: 100%; display: block; }
+        .text-gold { color: #FFD700; }
     </style>
 </head>
 <body>
 
-<div class="lang-switch-fixed" onclick="toggleLanguage()">
-    <span id="langFlag">🇰🇷</span>
-</div>
-
-<div id="modalOverlay" class="modal-overlay" onclick="closeModal()">
-    <div class="modal-content" onclick="event.stopPropagation()">
-        <div class="modal-tip-title" id="modalTitle"></div>
-        <div class="modal-tip-text" id="modalText"></div>
+    <div id="loading-overlay" class="fixed inset-0 bg-white z-[200] flex flex-col justify-center items-center">
+        <div class="w-10 h-10 border-4 border-[#F2F4F6] border-t-[#F7B500] rounded-full animate-spin mb-4"></div>
+        <p class="text-[11px] font-bold text-[#8B95A1] tracking-widest uppercase">Loading</p>
     </div>
-</div>
 
-<svg style="display: none;">
-    <symbol id="icon-map" viewBox="0 0 24 24">
-        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-    </symbol>
-</svg>
-
-<div class="container">
-    <header>
-        <div class="subtitle" data-zh="Personal Travel Itinerary" data-ko="Personal Travel Itinerary">Personal Travel Itinerary</div>
-        <h1 data-zh="北京·皇城慢旅" data-ko="베이징 · 황실의 느린 여행">北京·皇城慢旅</h1>
-        <p>2026.04.30 — 05.05</p>
-    </header>
-
-    <img src="BEIJINJ1.jpg" alt="banner" class="header-banner">
-
-    <nav class="nav-bar">
-        <div onclick="scrollToDay('day1', this)" class="nav-btn active">DAY 1</div>
-        <div onclick="scrollToDay('day2', this)" class="nav-btn">DAY 2</div>
-        <div onclick="scrollToDay('day3', this)" class="nav-btn">DAY 3</div>
-        <div onclick="scrollToDay('day4', this)" class="nav-btn">DAY 4</div>
-        <div onclick="scrollToDay('day5', this)" class="nav-btn">DAY 5</div>
-        <div onclick="scrollToDay('day6', this)" class="nav-btn">DAY 6</div>
-    </nav>
-
-    <div class="day-section" id="day1">
-        <div class="day-header">04.30</div>
-        <div class="itinerary-list">
-            <div class="itinerary-item">
-                <div class="dot-container"><div class="dot"></div></div>
-                <div class="content">
-                    <div class="event-title" onclick="showTip('JW', 'JW Marriott')">
-                        <span class="event-text" data-zh="JW Marriott Hotel Beijing Central" data-ko="JW 메리어트 호텔 베이징 센트럴">JW Marriott Hotel Beijing Central</span>
-                        <a href="https://surl.amap.com/gZRGr0WEaOn" target="_blank" class="map-btn" onclick="event.stopPropagation()"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
+    <div id="qr-bottom-sheet" class="bottom-sheet-overlay" onclick="closeQrSheet()">
+        <div id="qr-sheet-content" class="bottom-sheet-content" onclick="event.stopPropagation()">
+            <div class="sheet-handle"></div>
+            <div class="flex justify-between items-center mb-4">
+                <div class="w-8"></div> 
+                <h3 class="text-[17px] font-bold text-white tracking-wide">掃碼賺取或兌換積分</h3>
+                <button onclick="closeQrSheet()" class="w-8 h-8 flex items-center justify-center text-[#8B95A1] bg-[#333333] rounded-full active:scale-95 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+            </div>
+            <div class="text-center">
+                <div class="qr-wrapper shadow-lg"><canvas id="qr-code" class="rounded-[8px]"></canvas></div>
+            </div>
+            <div class="space-y-6 mb-8 px-2">
+                <div class="flex items-start gap-4">
+                    <svg class="w-6 h-6 text-white shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm14 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" /></svg>
+                    <div>
+                        <h4 class="text-[16px] font-bold text-white mb-1 tracking-wide">掃描您的會員條碼</h4>
+                        <p class="text-[13px] text-[#A0A0A0]">請向門市服務人員出示您的會員二維碼</p>
                     </div>
-                    <img src="JW Beijing.jpg" class="event-photo" onclick="showTip('JW', 'JW Marriott')">
+                </div>
+                <div class="flex items-start gap-4">
+                    <svg class="w-6 h-6 text-white shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                    <div>
+                        <h4 class="text-[16px] font-bold text-white mb-1 tracking-wide">積分活動</h4>
+                        <p class="text-[13px] text-[#A0A0A0]">所賺取積分將於消費結帳後計入您的帳戶</p>
+                    </div>
                 </div>
             </div>
-            <div class="itinerary-item">
-                <div class="dot-container"><div class="dot"></div></div>
-                <div class="content">
-                    <div class="event-title" onclick="showTip('TT', '天壇')">
-                        <span class="event-text" data-zh="天壇公園" data-ko="천단공원">天壇公園</span>
-                        <a href="https://surl.amap.com/8DXnFQaKax2" target="_blank" class="map-btn" onclick="event.stopPropagation()"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
-                    </div>
-                    <span class="event-info" data-zh="營業時間：旺季 06:00 - 22:00" data-ko="영업시간: 성수기 06:00 - 22:00">營業時間：旺季 06:00 - 22:00</span>
-                    <img src="天壇（祈年殿）.jpg" class="event-photo" onclick="showTip('TT', '天壇')">
-                </div>
+            <button onclick="closeQrSheet()" class="w-full bg-white text-[#191F28] py-[16px] rounded-[14px] font-bold text-[17px] active:scale-95 transition tracking-wide">完成</button>
+        </div>
+    </div>
+
+    <div id="info-modal" class="modal-overlay" onclick="closeInfoModal()">
+        <div class="bg-white w-full max-w-xs rounded-[32px] p-8 text-center shadow-2xl" onclick="event.stopPropagation()">
+            <div class="relative w-14 h-14 bg-[#F2F4F6] rounded-full flex items-center justify-center mx-auto mb-5">
+                <div class="absolute inset-[4px] rounded-full border-[1.5px] border-[#191F28]"></div>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-[26px] h-[26px] text-[#191F28] z-10">
+                    <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
+                </svg>
             </div>
-            <div class="itinerary-item">
-                <div class="dot-container"><div class="dot"></div></div>
-                <div class="content">
-                    <div class="event-title" onclick="showTip('QM', '前門')">
-                        <span class="event-text" data-zh="前門大街" data-ko="전문대가 (치엔먼다지에)">前門大街</span>
-                        <a href="https://surl.amap.com/2neRbJY1laZ5" target="_blank" class="map-btn" onclick="event.stopPropagation()"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
-                    </div>
-                    <span class="event-info" data-zh="營業時間：約 08:00 - 22:00" data-ko="영업시간: 약 08:00 - 22:00">營業時間：約 08:00 - 22:00</span>
-                    <img src="前門大街.jpg" class="event-photo" onclick="showTip('QM', '前門')">
-                </div>
+            <h3 class="text-[22px] font-bold text-[#191F28] mb-3">會籍積分</h3>
+            <p class="text-[15px] text-[#4E5968] font-medium leading-relaxed mb-6">每 10 積分<br>可折抵消費金額 10 元</p>
+            <div class="bg-[#F2F4F6] p-4 rounded-2xl text-left">
+                <p class="text-[11px] text-[#8B95A1] font-medium mb-1.5">・若有違法使用或消費退款，系統會追回已發放之積分。</p>
+                <p class="text-[11px] text-[#8B95A1] font-medium mb-1.5">・本系統目前僅適用於勤美公益門市、沙鹿站前門市。</p>
+                <p class="text-[11px] text-[#8B95A1] font-medium mb-1.5">・會籍積分及票券是綁定會員LINE帳號，若更換LINE使用帳號所有積分及票券不予保留。</p>
+                <p class="text-[11px] text-[#8B95A1] font-medium">・積分及票券使用不與特約優惠疊加使用。</p>
             </div>
         </div>
     </div>
 
-    <div class="day-section" id="day2">
-        <div class="day-header">05.01</div>
-        <div class="itinerary-list">
-            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title" data-zh="早餐" data-ko="조식">早餐</div></div></div>
-            <div class="itinerary-item">
-                <div class="dot-container"><div class="dot"></div></div>
-                <div class="content">
-                    <div class="event-title" data-zh="泳池＆SPA" data-ko="수영장 & SPA">泳池＆SPA</div>
-                    <img src="JW泳池.jpg" class="event-photo">
-                </div>
+    <div id="msg-modal" class="modal-overlay" style="z-index: 2000;">
+        <div class="msg-modal-content">
+            <h3 id="msg-title" class="text-[22px] font-bold text-[#191F28] mb-3">提示</h3>
+            <p id="msg-body" class="text-[15px] text-[#4E5968] mb-8 leading-relaxed font-medium">---</p>
+            <button onclick="closeMsgModal()" class="w-full bg-[#F7B500] text-white py-[16px] rounded-[16px] font-bold active:scale-95 transition">確定</button>
+        </div>
+    </div>
+
+    <div id="coming-soon-modal" class="modal-overlay" onclick="closeComingSoonModal()" style="z-index: 2000;">
+        <div class="bg-white w-full max-w-[240px] rounded-[24px] p-6 text-center shadow-2xl" onclick="event.stopPropagation()">
+            <div class="w-12 h-12 bg-[#F2F4F6] rounded-full flex items-center justify-center mx-auto mb-3">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6 text-[#8B95A1]">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
             </div>
-            <div class="itinerary-item">
-                <div class="dot-container"><div class="dot"></div></div>
-                <div class="content">
-                    <div class="event-title" onclick="showTip('GUGONG', '紫禁城 (故宮博物院)')">
-                        <span class="event-text" data-zh="紫禁城 (故宮博物院)" data-ko="자금성 (고궁박물원)">紫禁城 (故宮博物院)</span>
-                        <a href="https://surl.amap.com/h2Vgp70x61E" target="_blank" class="map-btn" onclick="event.stopPropagation()"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
+            <p class="text-[15px] font-bold text-[#191F28]">盒芯禮遇暫未開啟</p>
+        </div>
+    </div>
+
+    <div id="profile-modal" class="modal-overlay">
+        <div class="bg-white w-full max-w-sm rounded-[32px] p-8 shadow-2xl relative">
+            <h3 class="text-[24px] font-bold mb-1 text-[#191F28]">加入會員</h3>
+            <p class="text-[#8B95A1] text-[11px] mb-6 font-bold uppercase tracking-widest">MEMBER PROFILE</p>
+            <div class="space-y-4">
+                <div class="grid grid-cols-2 gap-3">
+                    <div><label class="text-[12px] font-bold text-[#4E5968] block mb-1.5 px-1">真實姓名 *</label><input id="input-name" type="text" class="soft-input"></div>
+                    <div><label class="text-[12px] font-bold text-[#4E5968] block mb-1.5 px-1">居住區域</label><div class="select-wrapper"><select id="input-area" class="soft-input"></select></div></div>
+                </div>
+                <div><label class="text-[12px] font-bold text-[#4E5968] block mb-1.5 px-1">連絡電話 *</label><input id="input-phone" type="tel" maxlength="10" class="soft-input"><p id="phone-error" class="text-[11px] text-[#F04438] mt-1.5 hidden px-1 font-medium">電話格式錯誤</p></div>
+                <div>
+                    <label class="text-[12px] font-bold text-[#4E5968] block mb-1.5 px-1">會員生日 *</label>
+                    <div class="flex gap-2">
+                        <div class="select-wrapper flex-[2]"><select id="birth-year" onchange="updateDays()" class="soft-input"><option value="">年</option></select></div>
+                        <div class="select-wrapper flex-1"><select id="birth-month" onchange="updateDays()" class="soft-input"><option value="">月</option></select></div>
+                        <div class="select-wrapper flex-1"><select id="birth-day" class="soft-input"><option value="">日</option></select></div>
                     </div>
-                    <span class="event-info" data-zh="營業時間：08:30 - 17:00 (週一閉館)" data-ko="영업시간: 08:30 - 17:00 (월요일 휴관)">營業時間：08:30 - 17:00 (週一閉館)</span>
-                    <img src="北京故宮紫禁城.jpg" class="event-photo" onclick="showTip('GUGONG', '紫禁城 (故宮博物院)')">
                 </div>
-            </div>
-            <div class="itinerary-item">
-                <div class="dot-container"><div class="dot"></div></div>
-                <div class="content">
-                    <div class="event-title" data-zh="Happy Hour" data-ko="해피아워">Happy Hour</div>
-                    <span class="event-info" data-zh="營業時間：17:30 - 19:30" data-ko="시간: 17:30 - 19:30">營業時間：17:30 - 19:30</span>
-                    <img src="JW行政酒廊.jpg" class="event-photo">
-                </div>
+                <div><label class="text-[12px] font-bold text-[#4E5968] block mb-1.5 px-1">電子信箱</label><input id="input-email" type="email" class="soft-input"></div>
+                <p class="text-[11px] text-[#8B95A1] text-center mb-2 mt-4 font-medium">* 請填寫正確實名資料以免影響權益</p>
+                <button id="btn-save" onclick="saveProfile()" class="w-full bg-[#F7B500] text-white py-[16px] rounded-[16px] font-bold shadow-[0_4px_12px_rgba(247,181,0,0.3)] active:scale-95 transition mt-2">確認加入</button>
             </div>
         </div>
     </div>
 
-    <div class="day-section" id="day3">
-        <div class="day-header">05.02</div>
-        <div class="itinerary-list">
-            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title" data-zh="早餐" data-ko="조식">早餐</div></div></div>
-            <div class="itinerary-item">
-                <div class="dot-container"><div class="dot"></div></div>
-                <div class="content">
-                    <div class="event-title" onclick="showTip('IC', 'InterContinental')">
-                        <span class="event-text" data-zh="InterContinental Beijing Sanlitun" data-ko="인터컨티넨탈 베이징 산리툰">InterContinental Beijing Sanlitun</span>
-                        <a href="https://surl.amap.com/2qFFWyG1ibCV" target="_blank" class="map-btn" onclick="event.stopPropagation()"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
-                    </div>
-                    <img src="三里屯洲際.jpg" class="event-photo" onclick="showTip('IC', 'InterContinental')">
-                </div>
-            </div>
-            <div class="itinerary-item">
-                <div class="dot-container"><div class="dot"></div></div>
-                <div class="content">
-                    <div class="event-title" data-zh="下午茶時光" data-ko="애프터눈 티 타임">下午茶時光</div>
-                    <span class="event-info" data-zh="營業時間：14:30 - 16:30" data-ko="시간: 14:30 - 16:30">營業時間：14:30 - 16:30</span>
-                    <img src="洲際行政酒廊.jpg" class="event-photo">
-                </div>
-            </div>
-            <div class="itinerary-item">
-                <div class="dot-container"><div class="dot"></div></div>
-                <div class="content">
-                    <div class="event-title" onclick="showTip('GWF', '恭王府')">
-                        <span class="event-text" data-zh="恭王府" data-ko="공왕부 (궁왕푸)">恭王府</span>
-                        <a href="https://surl.amap.com/aQiylpM1d6v6" target="_blank" class="map-btn" onclick="event.stopPropagation()"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
-                    </div>
-                    <span class="event-info" data-zh="營業時間：旺季 08:00 - 17:00" data-ko="영업시간: 08:00 - 17:00">營業時間：旺季 08:00 - 17:00</span>
-                    <img src="恭王府.jpg" class="event-photo" onclick="showTip('GWF', '恭王府')">
-                </div>
-            </div>
-            <div class="itinerary-item">
-                <div class="dot-container"><div class="dot"></div></div>
-                <div class="content">
-                    <div class="event-title" data-zh="Happy Hour" data-ko="해피아워">Happy Hour</div>
-                    <span class="event-info" data-zh="營業時間：18:00 - 20:00" data-ko="시간: 18:00 - 20:00">營業時間：18:00 - 20:00</span>
-                    <img src="洲際行政酒廊.jpg" class="event-photo">
-                </div>
-            </div>
-            <div class="itinerary-item">
-                <div class="dot-container"><div class="dot"></div></div>
-                <div class="content">
-                    <div class="event-title" onclick="showTip('SLT', '三里屯')">
-                        <span class="event-text" data-zh="三里屯太古里" data-ko="산리툰 타이쿠리">三里屯太古里</span>
-                        <a href="https://surl.amap.com/1EkfizYsfSM" target="_blank" class="map-btn" onclick="event.stopPropagation()"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
-                    </div>
-                    <span class="event-info" data-zh="營業時間：10:00 - 22:00" data-ko="영업시간: 10:00 - 22:00">營業時間：10:00 - 22:00</span>
-                    <span class="event-info" data-zh="備註：三里屯酒吧街 22:00 後仍會營業" data-ko="비고: 산리툰 바 거리는 22:00 이후에도 영업합니다">備註：三里屯酒吧街 22:00 後仍會營業</span>
-                    <img src="三里屯步行街.jpg" class="event-photo" onclick="showTip('SLT', '三里屯')">
-                </div>
-            </div>
-            <div class="itinerary-item">
-                <div class="dot-container"><div class="dot"></div></div>
-                <div class="content">
-                    <div class="event-title" onclick="showTip('DEST', 'Destination')">
-                        <span class="event-text" data-zh="Destination Club" data-ko="데스티네이션 클럽">Destination Club</span>
-                        <a href="https://surl.amap.com/1VpInpoHgRX" target="_blank" class="map-btn" onclick="event.stopPropagation()"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
-                    </div>
-                    <span class="event-info" data-zh="五六：21:00-05:00 / 日至四：21:00-03:00" data-ko="금토: 21:00-05:00 / 일-목: 21:00-03:00">五六：21:00-05:00 / 日至四：21:00-03:00</span>
-                    <img src="Destination Club.jpg" class="event-photo" onclick="showTip('DEST', 'Destination')">
-                </div>
+    <div id="edit-modal" class="modal-overlay">
+        <div class="bg-white w-full max-w-sm rounded-[32px] p-8 shadow-2xl relative">
+            <button onclick="document.getElementById('edit-modal').style.display='none'" class="absolute top-6 right-6 text-[#8B95A1] w-10 h-10 flex items-center justify-center bg-[#F2F4F6] rounded-full active:scale-95 transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+            <h3 class="text-[24px] font-bold mb-1 text-[#191F28]">個人資料</h3>
+            <p class="text-[#8B95A1] text-[11px] mb-5 font-bold uppercase tracking-widest">EDIT PROFILE</p>
+            
+            <div class="space-y-2">
+                <div><label class="text-[12px] font-bold text-[#8B95A1] block mb-1 px-1">真實姓名</label><input id="edit-name" type="text" disabled class="soft-input locked-input py-[12px]"></div>
+                <div><label class="text-[12px] font-bold text-[#8B95A1] block mb-1 px-1">連絡電話</label><input id="edit-phone" type="text" disabled class="soft-input locked-input py-[12px]"></div>
+                <div><label class="text-[12px] font-bold text-[#8B95A1] block mb-1 px-1">會員生日</label><input id="edit-birthday" type="text" disabled class="soft-input locked-input py-[12px]"></div>
+                
+                <div class="py-1"><div class="h-[1px] bg-[#F2F4F6] w-full"></div></div>
+                
+                <div><label class="text-[12px] font-bold text-[#F7B500] block mb-1 px-1">居住區域</label><div class="select-wrapper"><select id="edit-area" class="soft-input py-[12px]"></select></div></div>
+                <div><label class="text-[12px] font-bold text-[#F7B500] block mb-1 px-1">電子信箱</label><input id="edit-email" type="email" class="soft-input py-[12px]"></div>
+                
+                <button id="btn-update" onclick="updateProfile()" class="w-full bg-[#F7B500] text-white py-[14px] rounded-[16px] font-bold shadow-[0_4px_12px_rgba(247,181,0,0.3)] active:scale-95 transition mt-3">儲存變更</button>
             </div>
         </div>
     </div>
 
-    <div class="day-section" id="day4">
-        <div class="day-header">05.03</div>
-        <div class="itinerary-list">
-            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title" data-zh="早餐" data-ko="조식">早餐</div></div></div>
-            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title" data-zh="泳池＆SPA" data-ko="수영장 & SPA">泳池＆SPA</div><img src="洲際泳池.jpg" class="event-photo"></div></div>
-            <div class="itinerary-item">
-                <div class="dot-container"><div class="dot"></div></div>
-                <div class="content">
-                    <div class="event-title" data-zh="下午茶時光" data-ko="애프터눈 티 타임">下午茶時光</div>
-                    <span class="event-info" data-zh="營業時間：14:30 - 16:30" data-ko="시간: 14:30 - 16:30">營業時間：14:30 - 16:30</span>
-                    <img src="洲際行政酒廊.jpg" class="event-photo">
+    <div id="coupon-detail-modal" class="fixed inset-0 bg-[#F2F4F6] z-[3000] flex flex-col transition-transform duration-300 ease-in-out modal-slide-out will-change-transform">
+        <div class="flex items-center justify-between px-4 py-4 bg-white shrink-0 shadow-sm relative z-10">
+            <button onclick="closeCouponDetail()" class="p-2 text-[#191F28] active:scale-95 transition">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
+                </svg>
+            </button>
+            <h2 class="text-[17px] font-bold text-[#191F28] tracking-wide">我的票券</h2>
+            <div class="w-10"></div>
+        </div>
+
+        <div class="flex-1 overflow-y-auto p-4 pb-8">
+            <div class="bg-white rounded-[20px] shadow-[0_4px_24px_rgba(0,0,0,0.04)] overflow-hidden relative">
+                <div class="px-6 pt-8 pb-6 text-center">
+                    <div id="cd-icon-container" class="mx-auto mb-4 flex items-center justify-center">
+                        </div>
+                    
+                    <h3 id="cd-title" class="text-[18px] font-bold text-[#191F28] mb-2 leading-snug">---</h3>
+                    <p id="cd-date" class="text-[14px] text-[#2BA769] font-bold tracking-wide">---</p>
                 </div>
-            </div>
-            <div class="itinerary-item">
-                <div class="dot-container"><div class="dot"></div></div>
-                <div class="content">
-                    <div class="event-title" onclick="showTip('SCH', '什剎海')">
-                        <span class="event-text" data-zh="什剎海 & 銀錠橋" data-ko="스차하이 & 은정교">什剎海 & 銀錠橋</span>
-                        <a href="https://surl.amap.com/h3FIt6K1AdON" target="_blank" class="map-btn" onclick="event.stopPropagation()"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
+
+                <div class="relative h-6 flex items-center overflow-hidden">
+                    <div class="absolute left-[-12px] w-6 h-6 bg-[#F2F4F6] rounded-full shadow-inner"></div>
+                    <div class="w-full border-t-[2px] border-dashed border-[#E5E8EB] mx-5"></div>
+                    <div class="absolute right-[-12px] w-6 h-6 bg-[#F2F4F6] rounded-full shadow-inner"></div>
+                </div>
+
+                <div class="px-6 pt-6 pb-8">
+                    <div class="flex flex-col items-center mb-8">
+                        <div class="bg-white p-2 rounded-xl shadow-sm border border-gray-100 mb-3">
+                            <canvas id="cd-qrcode" class="rounded-lg"></canvas>
+                        </div>
+                        <p id="cd-id" class="text-[14px] text-[#4E5968] font-mono tracking-widest">---</p>
                     </div>
-                    <span class="event-info" data-zh="營業時間：全天開放" data-ko="영업시간: 상시 개방">營業時間：全天開放</span>
-                    <img src="什刹海（銀錠橋）.jpg" class="event-photo" onclick="showTip('SCH', '什剎海')">
-                </div>
-            </div>
-            <div class="itinerary-item">
-                <div class="dot-container"><div class="dot"></div></div>
-                <div class="content">
-                    <div class="event-title" onclick="showTip('YDXJ', '煙袋斜街')">
-                        <span class="event-text" data-zh="煙袋斜街" data-ko="엔다이시에지에 (후통거리)">煙袋斜街</span>
-                        <a href="https://surl.amap.com/EhOtLIO7Lx" target="_blank" class="map-btn" onclick="event.stopPropagation()"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
+
+                    <div class="space-y-6 text-left">
+                        <div>
+                            <h4 class="text-[14px] font-bold text-[#191F28] mb-2">活動說明</h4>
+                            <p id="cd-desc" class="text-[14px] text-[#4E5968] leading-relaxed">---</p>
+                        </div>
                     </div>
-                    <span class="event-info" data-zh="營業時間：24小時開放" data-ko="영업시간: 24시간">營業時間：24小時開放</span>
-                    <img src="煙袋斜街.jpg" class="event-photo" onclick="showTip('YDXJ', '煙袋斜街')">
-                </div>
-            </div>
-            <div class="itinerary-item">
-                <div class="dot-container"><div class="dot"></div></div>
-                <div class="content">
-                    <div class="event-title" data-zh="Happy Hour" data-ko="해피아워">Happy Hour</div>
-                    <span class="event-info" data-zh="營業時間：18:00 - 20:00" data-ko="시간: 18:00 - 20:00">營業時間：18:00 - 20:00</span>
-                    <img src="洲際行政酒廊.jpg" class="event-photo">
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="day-section" id="day5">
-        <div class="day-header">05.04</div>
-        <div class="itinerary-list">
-            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title" data-zh="早餐" data-ko="조식">早餐</div></div></div>
-            <div class="itinerary-item">
-                <div class="dot-container"><div class="dot"></div></div>
-                <div class="content">
-                    <div class="event-title" onclick="showTip('YHG', '雍和宮')">
-                        <span class="event-text" data-zh="雍和宮" data-ko="옹화궁 (용허궁)">雍和宮</span>
-                        <a href="https://surl.amap.com/4blqS661g2GX" target="_blank" class="map-btn" onclick="event.stopPropagation()"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
-                    </div>
-                    <span class="event-info" data-zh="營業時間：09:00 - 16:30" data-ko="영업시간: 09:00 - 16:30">營業時間：09:00 - 16:30</span>
-                    <img src="雍和宮.jpg" class="event-photo" onclick="showTip('YHG', '雍和宮')">
-                </div>
-            </div>
-            <div class="itinerary-item">
-                <div class="dot-container"><div class="dot"></div></div>
-                <div class="content">
-                    <div class="event-title" data-zh="下午茶時光" data-ko="애프터눈 티 타임">下午茶時光</div>
-                    <span class="event-info" data-zh="營業時間：14:30 - 16:30" data-ko="시간: 14:30 - 16:30">營業時間：14:30 - 16:30</span>
-                    <img src="洲際行政酒廊.jpg" class="event-photo">
-                </div>
-            </div>
-            <div class="itinerary-item">
-                <div class="dot-container"><div class="dot"></div></div>
-                <div class="content">
-                    <div class="event-title" onclick="showTip('YHY', '頤和園')">
-                        <span class="event-text" data-zh="頤和園" data-ko="이화원">頤和園</span>
-                        <a href="https://surl.amap.com/6OR83WZt4LY" target="_blank" class="map-btn" onclick="event.stopPropagation()"><svg class="map-icon"><use xlink:href="#icon-map"></use></svg></a>
-                    </div>
-                    <span class="event-info" data-zh="營業時間：旺季 06:00 - 20:00" data-ko="영업시간: 06:00 - 20:00">營業時間：旺季 06:00 - 20:00</span>
-                    <img src="頤和園.jpg" class="event-photo" onclick="showTip('YHY', '頤和園')">
-                </div>
-            </div>
-            <div class="itinerary-item">
-                <div class="dot-container"><div class="dot"></div></div>
-                <div class="content">
-                    <div class="event-title" data-zh="Happy Hour" data-ko="해피아워">Happy Hour</div>
-                    <span class="event-info" data-zh="營業時間：18:00 - 20:00" data-ko="시간: 18:00 - 20:00">營業時間：18:00 - 20:00</span>
-                    <img src="洲際行政酒廊.jpg" class="event-photo">
-                </div>
-            </div>
+        <div class="p-4 bg-white shrink-0 pb-[calc(16px+env(safe-area-inset-bottom))] shadow-[0_-4px_20px_rgba(0,0,0,0.03)] relative z-10">
+            <button onclick="closeCouponDetail()" class="w-full bg-[#2BA769] text-white py-[16px] rounded-[12px] font-bold text-[17px] active:scale-95 transition tracking-wide">關閉票券</button>
         </div>
     </div>
 
-    <div class="day-section" id="day6">
-        <div class="day-header">05.05</div>
-        <div class="itinerary-list">
-            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title" data-zh="酒店早餐" data-ko="호텔 조식">酒店早餐</div></div></div>
-            <div class="itinerary-item"><div class="dot-container"><div class="dot"></div></div><div class="content"><div class="event-title" data-zh="PEK 首都國際機場" data-ko="PEK 수도 국제공항">PEK 首都國際機場</div></div></div>
+    <div id="app" class="max-w-md mx-auto relative h-full flex flex-col">
+        <header id="main-header" class="px-6 pt-7 pb-4 flex justify-between items-center shrink-0 min-h-[80px] transition-all duration-300">
+            <div class="flex items-center gap-2">
+                <button id="btn-back" onclick="switchTab('card')" class="hidden p-2 -ml-3 text-[#191F28] active:scale-95 transition">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+                <div class="flex flex-col">
+                    <span id="header-subtitle" class="text-[10px] font-bold text-[#F7B500] tracking-widest uppercase leading-none mb-1">BLACKBOX</span>
+                    <h1 id="page-title" class="text-[22px] font-bold text-[#191F28] tracking-tight leading-none">會員中心</h1>
+                </div>
+            </div>
+            
+            <div id="header-actions" class="flex gap-2">
+                <button onclick="openInfoModal()" class="relative w-[36px] h-[36px] flex items-center justify-center bg-[#F7B500] rounded-full active:scale-95 transition">
+                    <div class="absolute inset-[2px] rounded-full border-[1.5px] border-white"></div>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-[16px] h-[16px] text-white z-10">
+                        <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+                <button onclick="openEditModal()" class="w-[36px] h-[36px] flex items-center justify-center bg-white rounded-full text-[#8B95A1] active:scale-95 transition shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-[18px] h-[18px]">
+                      <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.06-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.73,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.06,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.43-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.49-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+        
+        <div id="main-content" class="content-scroll hidden">
+            <main id="tab-blackbox" class="tab-content h-full">
+                <div id="activity-container" class="h-full w-full"></div>
+            </main>
+
+            <main id="tab-card" class="tab-content active px-6 pt-1">
+                <div class="click-wrapper" onclick="openQrSheet()" style="cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; -webkit-user-select: none;">
+                    <div class="card-black-gold mb-5">
+                        <div class="relative z-10 flex justify-between items-start mb-12">
+                            <div>
+                                <p class="text-[11px] text-[#8B95A1] uppercase tracking-widest mb-1 font-bold">Member Name</p>
+                                <h2 id="m-name" class="text-[20px] font-bold text-white tracking-wide">---</h2>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-[11px] text-[#8B95A1] uppercase tracking-widest mb-1 font-bold">Points</p>
+                                <p id="m-points" class="text-[36px] font-bold text-gold tracking-tighter leading-none">0</p>
+                            </div>
+                        </div>
+                        <div class="relative z-10 flex justify-between items-end">
+                            <div class="flex flex-col">
+                                <span class="text-[10px] text-[#8B95A1] uppercase tracking-widest mb-1 font-bold">Phone Number</span>
+                                <p id="m-phone" class="text-[14px] text-[#D1D6DB] font-mono tracking-widest font-medium">---</p>
+                            </div>
+                            <div class="rank-badge flex items-center gap-1.5">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h4v16H4V4zm6 0h2v16h-2V4zm4 0h2v16h-2V4zm4 0h2v16h-2V4z" /></svg>
+                                <span class="text-[11px] text-white font-bold tracking-widest uppercase leading-none">MEMBER</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-between gap-3 mb-5">
+                    <button onclick="openComingSoonModal()" class="flex-1 bg-white rounded-[18px] py-4 flex flex-col items-center justify-center shadow-[0_4px_20px_rgba(0,0,0,0.03)] active:scale-[0.96] transition-transform duration-200 ease-out">
+                        <svg class="w-9 h-9 mb-1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 11c-.6 0-1 .4-1 1v4c0 3.3 2.7 6 6 6h2v-4.5c0-1.5-1-2.5-2-3.5L7 12c-.5-.6-1-1-3-1z" fill="#8B95A1"/>
+                            <path d="M20 11c.6 0 1 .4 1 1v4c0 3.3-2.7 6-6 6h-2v-4.5c0-1.5 1-2.5 2-3.5l2-2c.5-.6 1-1 3-1z" fill="#8B95A1"/>
+                            <path d="M12 3l1.8 4.2h4.7l-3.8 2.8 1.4 4.5-4.1-3.1-4.1 3.1 1.4-4.5-3.8-2.8h4.7L12 3z" fill="#F7B500"/>
+                        </svg>
+                        <span class="text-[13px] font-bold text-[#191F28]">盒芯禮遇</span>
+                    </button>
+
+                    <button onclick="switchTab('coupon')" class="flex-1 bg-white rounded-[18px] py-4 flex flex-col items-center justify-center shadow-[0_4px_20px_rgba(0,0,0,0.03)] active:scale-[0.96] transition-transform duration-200 ease-out">
+                        <svg class="w-9 h-9 mb-1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="4" y="6" width="16" height="11" rx="1.5" fill="#8B95A1" opacity="0.7" transform="rotate(-8 12 12)"/>
+                            <rect x="2" y="10" width="20" height="12" rx="1.5" fill="#F7B500"/>
+                            <path d="M12 12.5l1.3 2.7h3.2l-2.4 1.8.9 3-2.6-1.9-2.6 1.9.9-3-2.4-1.8h3.2L12 12.5z" fill="#FFFFFF"/>
+                        </svg>
+                        <span class="text-[13px] font-bold text-[#191F28]">票券錢包</span>
+                    </button>
+
+                    <button onclick="window.location.href='https://blackboxrepair.github.io/bookingonline/'" class="flex-1 bg-white rounded-[18px] py-4 flex flex-col items-center justify-center shadow-[0_4px_20px_rgba(0,0,0,0.03)] active:scale-[0.96] transition-transform duration-200 ease-out">
+                        <svg class="w-9 h-9 mb-1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="3" y="7" width="18" height="14" rx="2" fill="#D1D6DB"/>
+                            <path d="M3 9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v3H3V9z" fill="#8B95A1"/>
+                            <rect x="6" y="4" width="2.5" height="5" rx="1.25" fill="#D1D6DB"/>
+                            <rect x="15.5" y="4" width="2.5" height="5" rx="1.25" fill="#D1D6DB"/>
+                            <circle cx="12" cy="15" r="4.5" fill="#F7B500"/>
+                        </svg>
+                        <span class="text-[13px] font-bold text-[#191F28]">快速預約</span>
+                    </button>
+                </div>
+
+                <div class="toss-card mb-5 relative flex flex-col items-center py-8">
+                    <div class="w-full max-w-[260px] relative">
+                        <svg viewBox="0 0 200 120" class="w-full h-auto overflow-visible">
+                            <defs>
+                                <linearGradient id="arcGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" stop-color="#F7B500" />
+                                    <stop offset="100%" stop-color="#FFD700" />
+                                </linearGradient>
+                            </defs>
+                            <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="#F2F4F6" stroke-width="12" stroke-linecap="round"/>
+                            <path id="progress-arc" d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="url(#arcGrad)" stroke-width="12" stroke-linecap="round" stroke-dasharray="251.3" stroke-dashoffset="251.3" style="transition: stroke-dashoffset 1.5s cubic-bezier(0.16, 1, 0.3, 1);"/>
+
+                            <circle cx="35" cy="53" r="5" fill="#ffffff" stroke="#E5E8EB" stroke-width="3" id="node-1" style="transition: stroke 0.5s 1s ease;"/>
+                            <text x="22" y="53" font-size="10" fill="#8B95A1" font-weight="bold">3</text>
+                            
+                            <circle cx="75" cy="24" r="5" fill="#ffffff" stroke="#E5E8EB" stroke-width="3" id="node-2" style="transition: stroke 0.5s 1s ease;"/>
+                            <text x="70" y="14" text-anchor="middle" font-size="10" fill="#8B95A1" font-weight="bold">6</text>
+                            
+                            <circle cx="140" cy="31" r="5" fill="#ffffff" stroke="#E5E8EB" stroke-width="3" id="node-3" style="transition: stroke 0.5s 1s ease;"/>
+                            <text x="145" y="21" font-size="10" fill="#8B95A1" font-weight="bold">10</text>
+
+                            <circle cx="180" cy="100" r="5" fill="#ffffff" stroke="#E5E8EB" stroke-width="3" id="node-4" style="transition: stroke 0.5s 1s ease;"/>
+                            <text x="195" y="103" font-size="10" fill="#8B95A1" font-weight="bold">15</text>
+                        </svg>
+                        
+                        <div class="absolute inset-0 flex flex-col items-center justify-end pb-[6px]">
+                            <span id="yearly-count" class="text-[56px] font-black text-[#191F28] leading-none mb-1 tracking-tighter">0</span>
+                            <div class="flex items-center text-[#8B95A1] text-[12px] font-bold">本年度消費次數 <svg class="w-3 h-3 ml-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" /></svg></div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <main id="tab-coupon" class="tab-content px-6 pt-2">
+                 <div id="coupon-list" class="flex flex-col gap-4">
+                     <div class="py-12 text-center">
+                        <div class="inline-block w-8 h-8 border-4 border-[#F2F4F6] border-t-[#F7B500] rounded-full animate-spin"></div>
+                     </div>
+                 </div>
+            </main>
         </div>
     </div>
 
-    <footer data-zh="DESIGNED FOR PERSONAL JOURNEY" data-ko="개인 여행을 위해 디자인됨">DESIGNED FOR PERSONAL JOURNEY</footer>
-</div>
+    <script>
+        const ACTIVITY_URL = ''; 
+        const LIFF_ID = '2008733642-8wMmnKuw'; 
+        const SUPABASE_URL = 'https://nszwpwimwxvjguoalzwt.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5zendwd2ltd3h2amd1b2Fsend0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYxMzY1NzYsImV4cCI6MjA4MTcxMjU3Nn0.TaAt4aqEhDsONWtDCagD5rlTMknEWfhq8fMVL1Rt4lg';
 
-<script>
-    const tips = {
-        'JW': { zh: '地理位置優越，靠近地鐵。酒廊服務口碑極佳。', ko: '지하철역과 가까운 최적의 위치. 라운지 서비스가 매우 훌륭합니다.' },
-        'TT': { zh: '建議早點去，避開旅行團。迴音壁目前不一定開放。', ko: '단체 관광객을 피하려면 아침 일찍 가는 것을 추천합니다.' },
-        'QM': { zh: '可以坐有軌電車「叮叮車」，推薦品嚐大柵欄老字號。', ko: '트램인 딩딩차를 타보세요. 다스란의 오래된 맛집을 추천합니다.' },
-        'GUGONG': { 
-            zh: '紫禁城（故宮）是世界上規模面積最大的皇家古建築群，曾有24位明清皇帝在此居住。整體區域主要劃分為「前朝」與「後寢」兩大部分：前朝宏偉莊嚴，是皇帝處理朝政與舉行大典的工作區；後寢則精緻細膩，是皇室生活的區域。\n\n入口與廣場建築\n- 午門：故宮的正門，設有三個門洞。中間的「御路門」是皇帝專用的出入通道，宗室王公走西門，文武官員走東門。明朝時期，得罪皇帝的大臣會被押到午門外進行「廷杖」懲罰，而非民間戲曲常說的「推出午門斬首」。\n- 太和門：明朝時又稱大朝門，是皇帝早朝進行「御門聽政」的場所，明代有三位皇帝曾在此登基。\n\n📍 前朝兩側建築\n- 武英殿（西側）：明初修建，皇帝曾在此齋戒及召見大臣；1644年李自成攻入紫禁城時也曾在此駐紮。現今作為故宮的「陶瓷館」，常設展出各朝代的精美瓷器。\n- 文華殿（東側）：現今被稱為故宮的「書畫館」，舉辦許多書畫展覽。\n- 文淵閣：位於文華殿後方，是皇家的藏書樓。為了祈求防火，它是故宮中唯一不使用紅牆黃瓦，而是採用黑色琉璃瓦的建築（因五行中黑色屬水，有以水剋火的寓意）。\n\n前朝三大殿（建於高台之上）\n- 太和殿（俗稱金鑾殿）：紫禁城內規模最大、等級最高的建築，屋頂邊角擁有最高規格的十個脊獸。這裡並非平時上朝的地方，而是專門用來舉行皇帝登基、大婚等重大典禮的場所。明代原稱「奉天殿」，但在朱棣遷都北京當年就曾被雷電擊中引發大火。\n- 中和殿：體量較小，主要功用是供皇帝前往太和殿舉行大典前休息。\n- 保和殿：明代稱為「謹身殿」，大典前皇帝會在此更衣；清代順治、康熙皇帝曾在此短暫居住。乾隆54年以後，這裡成為皇帝親自主持科舉「殿試」的場所。殿後方有一塊重達250噸、雕刻精美的「雲龍石雕」，當年動用了上萬民夫才運送進宮。\n\n後寢區（內廷）\n- 養心殿：清朝自雍正皇帝後改以此為正式寢宮與辦公處，也是垂簾聽政與簽署退位詔書的發生地。\n- 乾清宮：內廷規模最大的宮殿，明代至清康熙時期都是皇帝的寢宮。為了防範刺客，殿內設有9間暖閣與27張床位，連親信都不知道皇帝當晚睡在哪。皇帝駕崩後需在此停靈27天以示「壽終正寢」；殿內懸掛著名的「正大光明」匾額，匾額後方曾用於隱藏寫有皇位繼承人名字的建儲匣。\n- 交泰殿與坤寧宮：交泰殿內部呈正方形，殿內設有寶座，並用於存放皇帝的印璽。\n- 慈寧宮與慈寧宮花園：明清兩代皇太后居住與生活的區域。慈寧宮主要用於為太后舉行重大典禮（如萬壽節、上徽號等）；花園則為了滿足太后禮佛、供佛的需求而設。\n- 東西六宮：嬪妃們居住的院落，通常為一正殿兩配殿的格局。\n- 永壽宮：現今主要用於展出中國古建築的彩畫工藝。\n- 延禧宮：歷史上曾發生多次火災，地位較不受重視。院內有一座因宣統帝溥儀退位而未能建成的西洋式「水晶宮」（原構想以玻璃為牆壁與地板，內部注水養魚）。\n\n單獨收費展區與特殊景點\n- 鐘錶館（奉先殿）：收藏了約1500件清代宮廷製造與西洋進口的各國精美鐘錶，包括會定時開門報時的機關鐘錶。\n- 珍寶館（寧壽宮區）：這區是乾隆皇帝為了自己退位養老而下令擴修的場所（又稱乾隆花園），耗時五年建成，但乾隆最終並未在此居住。\n- 皇極殿：寧壽宮區的正殿，兩側連廊現為珍寶館，展出400多件清宮精美玉雕、寶石、翠鳥羽毛製成的點翠飾品與金銀器。\n- 九龍壁：由270塊琉璃磚拼成，為中國三大九龍壁之一。\n- 暢音閣：分為上中下三層的大型戲台，節慶時用於聽戲。\n- 珍妃井：傳說慈禧太后西逃前，命人將光緒帝的珍妃推入此井中淹死。\n- 御花園：位於中軸線最北端，是皇帝與皇后遊賞的花園。面積雖小但花木繁盛，內有天花板雕刻盤龍藻井的「萬春亭」，以及用太湖石堆疊而成的「堆秀山」。\n- 神武門：故宮的最北門，常設有免費展覽，登頂後可向北眺望景山的萬春亭，向南俯瞰大半個故宮與角樓。', 
-            ko: '자금성(고궁)은 세계에서 가장 큰 규모의 황실 고건축물군으로, 명·청 시대 24명의 황제가 이곳에 거주했습니다. 전체 구역은 주로 \'외조\'와 \'내정\'의 두 부분으로 나뉩니다. 외조는 웅장하고 엄숙하여 황제가 정무를 처리하고 대례를 거행하던 업무 구역이며, 내정은 정교하고 세밀하여 황실의 생활 구역입니다.\n\n입구 및 광장 건축\n- 오문(우먼): 고궁의 정문으로 세 개의 문구멍이 있습니다. 가운데 \'어로문\'은 황제 전용 통로입니다. 명나라 때 황제에게 미움을 산 대신들은 이곳에서 \'정장\' 처벌을 받았습니다.\n- 태화문: 황제가 이른 아침 \'어문청정\'(정무를 듣는 것)을 하던 장소입니다.\n\n📍 외조 양측 건축\n- 무영전(서측): 황제가 재계하거나 대신을 접견하던 곳입니다. 현재는 고궁의 \'도자기관\'으로 사용됩니다.\n- 문화전(동측): 현재 고궁의 \'서화관\'으로 불리며 다양한 서화 전시가 열립니다.\n- 문연각: 문화전 뒤편의 황실 도서관입니다. 방화를 기원하며 고궁에서 유일하게 검은색 유리 기와를 사용했습니다.\n\n외조 3대 전각\n- 태화전(금란전): 자금성 내 최대 규모와 최고 등급의 건축물입니다. 황제의 즉위식, 혼례 등 중대한 의식을 거행하던 장소입니다.\n- 중화전: 황제가 태화전 대례에 참석하기 전 잠시 쉬어가던 곳입니다.\n- 보화전: 명나라 때는 황제의 의복을 갈아입던 곳이었고, 청나라 건륭 54년 이후에는 황제가 직접 주재하는 \'전시\'(과거 시험) 장소가 되었습니다. 뒤편에는 250톤에 달하는 거대한 \'운룡석조\'가 있습니다.\n\n내정 구역(생활 공간)\n- 양심전: 옹정제 이후 정식 침전이자 집무실로 사용되었습니다. 수렴청정과 퇴위 조서 서명이 이루어진 역사적인 장소입니다.\n- 건청궁: 명나라부터 청나라 강희제 때까지 황제의 침전이었습니다. 정대광명(正大光明) 편액 뒤에 후계자의 이름을 숨겨두기도 했습니다.\n- 교태전 및 곤녕궁: 교태전은 황제의 인장을 보관하던 곳이며, 곤녕궁은 황후의 거처였습니다.\n- 자녕궁 및 자녕궁 화원: 황태후가 거주하던 구역입니다. 화원은 태후가 불공을 드리는 수요를 충족시키기 위해 조성되었습니다.\n- 동서6궁: 후궁들이 거주하던 마당입니다.\n  * 영수궁: 현재 중국 고건축 채화 공예 전시 중.\n  * 연희궁: 서양식 \'수정궁\'이 건설되다 중단된 독특한 흔적이 남아있습니다.\n\n별도 요금 전시 구역 및 특수 명소\n- 시계관(봉선전): 청나라 황실에서 제작하거나 서양에서 수입한 정교한 시계 1,500여 점을 소장하고 있습니다.\n- 진보관(영수궁 구역): 건륭황제가 퇴위 후 노후를 위해 확장한 구역(건륭화원)입니다.\n  * 황극전: 영수궁 구역의 정전으로 보물들이 전시되어 있습니다.\n  * 구룡벽: 270개의 유리 벽돌로 만든 중국 3대 구룡벽 중 하나입니다.\n  * 창음각: 명절에 연극을 관람하던 3층 규모의 대형 무대입니다.\n  * 진비정: 서구 열강 침입 시 서태후가 광서제의 진비를 밀어 넣어 익사시켰다는 전설이 있는 우물입니다.\n- 어화원: 중축선 최북단에 위치한 황제와 황후의 정원입니다.\n- 신무문: 고궁의 북문으로, 성벽에 올라 북쪽으로 경산공원을, 남쪽으로 고궁 전경을 조망할 수 있습니다.' 
-        },
-        'IC': { zh: '三里屯地標，視野極佳。房間內可見太古里。', ko: '산리툰의 랜드마크. 객실에서 타이쿠리가 보입니다.' },
-        'GWF': { zh: '清代規模最大的王府，花園部分非常精緻。', ko: '청나라 최대 규모의 왕부로, 정원이 매우 아름답습니다.' },
-        'SLT': { zh: '北京最潮流的商圈，適合夜間漫步與購物。', ko: '베이징에서 가장 힙한 쇼핑가로 야경과 쇼핑에 최적입니다.' },
-        'DEST': { zh: '北京著名的文化空間與社交場所。', ko: '베이징의 유명한 문화 공간이자 사교 장소입니다.' },
-        'SCH': { zh: '適合租船遊湖，或在岸邊選一家酒吧放鬆。', ko: '보트를 빌려 호수를 즐기거나 수변 바에서 쉬기 좋습니다.' },
-        'YDXJ': { zh: '北京最古老的斜街，適合購買特色紀念品。', ko: '베이징에서 가장 오래된 골목으로 기념품 사기 좋습니다.' },
-        'YHG': { zh: '香火最旺的藏傳佛教寺廟，建築非常精美。', ko: '베이징에서 가장 유명한 라마교 사찰입니다.' },
-        'YHY': { zh: '建議下午去，可以看昆明湖日落，景觀極其震撼。', ko: '늦은 오후에 가서 곤명호의 일몰을 보는 것을 추천합니다.' }
-    };
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        let currentUserLineId = null;
+        let currentUserProfile = null;
+        let currentCoupons = []; 
 
-    let currentLang = 'zh';
-    function toggleLanguage() {
-        currentLang = currentLang === 'zh' ? 'ko' : 'zh';
-        document.querySelectorAll('[data-zh]').forEach(el => { 
-            el.textContent = el.getAttribute(`data-${currentLang}`); 
-        });
-        document.getElementById('langFlag').textContent = currentLang === 'zh' ? '🇰🇷' : '🇹🇼';
-    }
+        const areaList = [
+            "西屯區","沙鹿區","中區","東區","西區","南區","北區","北屯區","南屯區",
+            "太平區","大里區","霧峰區","烏日區","豐原區","后里區","石岡區","東勢區","和平區","新社區",
+            "潭子區","大雅區","神岡區","大肚區","龍井區","梧棲區","清水區","大甲區","外埔區","大安區",
+            "台北市","新北市","桃園市","基隆縣","新竹市","新竹縣","苗栗縣","彰化縣","南投縣",
+            "雲林縣","嘉義市","嘉義縣","台南市","高雄市","屏東縣","花蓮縣","台東縣","離島地區"
+        ];
 
-    function showTip(key, title) {
-        // 開啟彈窗時鎖定背景捲動
-        document.body.classList.add('modal-open');
-        document.getElementById('modalTitle').textContent = title;
-        document.getElementById('modalText').textContent = tips[key][currentLang];
-        document.getElementById('modalOverlay').style.display = 'flex';
-    }
+        window.onload = async () => {
+            initSelects();
+            renderActivityTab(); 
+            await initLiff();
+        };
 
-    function closeModal() {
-        // 關閉彈窗時恢復背景捲動
-        document.body.classList.remove('modal-open');
-        document.getElementById('modalOverlay').style.display = 'none';
-    }
+        function openCouponDetail(couponId) {
+            const coupon = currentCoupons.find(c => c.id === couponId);
+            if (!coupon) return;
 
-    if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
-    
-    function scrollToDay(dayId, btn) {
-        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const element = document.getElementById(dayId);
-        if (element) {
-            const offset = 80;
-            const bodyRect = document.body.getBoundingClientRect().top;
-            const elementRect = element.getBoundingClientRect().top;
-            window.scrollTo({ top: elementRect - bodyRect - offset, behavior: 'smooth' });
+            document.getElementById('cd-title').innerText = coupon.coupon_name;
+            document.getElementById('cd-date').innerText = coupon.valid_until ? `使用期間：即日起 ~ ${coupon.valid_until}` : '使用期間：永久有效';
+            
+            const displayId = coupon.id.replace(/-/g, '').substring(0, 16).toUpperCase();
+            document.getElementById('cd-id').innerText = displayId;
+            document.getElementById('cd-desc').innerText = coupon.description || '請於實體店家出示條碼兌換即可，並需於兌換後三個月內使用完畢。';
+
+            const iconContainer = document.getElementById('cd-icon-container');
+            iconContainer.className = "mx-auto mb-4 flex items-center justify-center";
+            
+            if (coupon.type === 'cash') {
+                iconContainer.innerHTML = `<svg class="w-16 h-16 text-[#F7B500]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`;
+            } else {
+                iconContainer.innerHTML = `<svg class="w-16 h-16 text-[#F7B500]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" /></svg>`;
+            }
+
+            new QRious({
+                element: document.getElementById('cd-qrcode'),
+                value: "CPN-" + coupon.id,
+                size: 160,
+                level: 'H'
+            });
+
+            const modal = document.getElementById('coupon-detail-modal');
+            modal.classList.remove('modal-slide-out');
+            modal.classList.add('modal-slide-in');
         }
-    }
 
-    window.addEventListener('load', function() {
-        setTimeout(() => { window.scrollTo(0, 0); }, 10);
-    });
-</script>
+        function closeCouponDetail() {
+            const modal = document.getElementById('coupon-detail-modal');
+            modal.classList.remove('modal-slide-in');
+            modal.classList.add('modal-slide-out');
+        }
 
+        function openQrSheet() {
+            const sheet = document.getElementById('qr-bottom-sheet');
+            const content = document.getElementById('qr-sheet-content');
+            sheet.style.display = 'flex';
+            content.style.animation = 'slideUp 0.3s forwards cubic-bezier(0.16, 1, 0.3, 1)';
+            sheet.style.animation = 'fadeIn 0.3s ease-out';
+        }
+
+        function closeQrSheet() {
+            const sheet = document.getElementById('qr-bottom-sheet');
+            const content = document.getElementById('qr-sheet-content');
+            content.style.animation = 'slideDown 0.3s forwards cubic-bezier(0.16, 1, 0.3, 1)';
+            sheet.style.animation = 'fadeOut 0.3s forwards ease-out';
+            setTimeout(() => { sheet.style.display = 'none'; }, 300); 
+        }
+
+        function openInfoModal() { document.getElementById('info-modal').style.display = 'flex'; }
+        function closeInfoModal() { document.getElementById('info-modal').style.display = 'none'; }
+        
+        function openComingSoonModal() { document.getElementById('coming-soon-modal').style.display = 'flex'; }
+        function closeComingSoonModal() { document.getElementById('coming-soon-modal').style.display = 'none'; }
+
+        function showMsg(title, msg) { 
+            document.getElementById('msg-title').innerText = title; 
+            document.getElementById('msg-body').innerText = msg; 
+            document.getElementById('msg-modal').style.display = 'flex'; 
+        }
+        function closeMsgModal() { document.getElementById('msg-modal').style.display = 'none'; }
+
+        function initSelects() {
+            const areaOpts = '<option value="">選擇區域</option>' + areaList.map(a => `<option value="${a}">${a}</option>`).join('');
+            document.getElementById('input-area').innerHTML = areaOpts;
+            document.getElementById('edit-area').innerHTML = areaOpts;
+
+            const yearSelect = document.getElementById('birth-year');
+            const monthSelect = document.getElementById('birth-month');
+            const currentYear = new Date().getFullYear();
+            for (let i = currentYear; i >= 1940; i--) yearSelect.options.add(new Option(i + '年', i));
+            for (let i = 1; i <= 12; i++) monthSelect.options.add(new Option(i + '月', i));
+            updateDays();
+        }
+
+        function updateDays() {
+            const year = parseInt(document.getElementById('birth-year').value);
+            const month = parseInt(document.getElementById('birth-month').value);
+            const daySelect = document.getElementById('birth-day');
+            const selectedDay = daySelect.value;
+            daySelect.innerHTML = '<option value="">日</option>';
+            if (year && month) {
+                const daysInMonth = new Date(year, month, 0).getDate();
+                for (let i = 1; i <= daysInMonth; i++) daySelect.options.add(new Option(i + '日', i));
+                if (selectedDay && selectedDay <= daysInMonth) daySelect.value = selectedDay;
+            }
+        }
+
+        async function initLiff() {
+            try {
+                await liff.init({ liffId: LIFF_ID });
+                if (!liff.isLoggedIn()) { liff.login(); } 
+                else {
+                    const profile = await liff.getProfile();
+                    currentUserLineId = profile.userId;
+                    checkMemberStatus(profile);
+                }
+            } catch (err) { console.error('Init Fail', err); }
+        }
+
+        async function checkMemberStatus(lineProfile) {
+            let { data } = await _supabase.from('profiles').select('*').eq('line_id', lineProfile.userId).single();
+            if (!data || !data.phone || !data.birthday) {
+                document.getElementById('profile-modal').style.display = 'flex';
+                document.getElementById('input-name').value = lineProfile.displayName || "";
+                document.getElementById('loading-overlay').style.display = 'none';
+            } else {
+                currentUserProfile = data;
+                renderApp(data, lineProfile.userId);
+            }
+        }
+
+        document.getElementById('input-phone').addEventListener('input', function(e) {
+            const regex = /^09\d{8}$/;
+            const errorEl = document.getElementById('phone-error');
+            if (e.target.value.length > 0 && !regex.test(e.target.value)) errorEl.classList.remove('hidden');
+            else errorEl.classList.add('hidden');
+        });
+
+        async function saveProfile() {
+            const btn = document.getElementById('btn-save');
+            const name = document.getElementById('input-name').value;
+            const phone = document.getElementById('input-phone').value;
+            const year = document.getElementById('birth-year').value;
+            const month = document.getElementById('birth-month').value.padStart(2, '0');
+            const day = document.getElementById('birth-day').value.padStart(2, '0');
+            const email = document.getElementById('input-email').value;
+            const area = document.getElementById('input-area').value;
+
+            if (!name || !/^09\d{8}$/.test(phone) || !year || !month || !day) { showMsg('提醒', '請正確填寫所有必填欄位'); return; }
+            if (!currentUserLineId) { showMsg('系統錯誤', '無法取得 LINE ID'); return; }
+
+            btn.disabled = true; btn.innerText = "檢查中...";
+
+            try {
+                const { data: existingUser, error: checkError } = await _supabase.from('profiles').select('line_id').eq('phone', phone).maybeSingle();
+                if (checkError) throw checkError;
+                if (existingUser && existingUser.line_id !== currentUserLineId) {
+                    showMsg('註冊失敗', '此電話號碼已被註冊。');
+                    btn.disabled = false; btn.innerText = "確認加入";
+                    return; 
+                }
+
+                const birthday = `${year}-${month}-${day}`;
+                const { data, error } = await _supabase.from('profiles').upsert({
+                    line_id: currentUserLineId, full_name: name, phone: phone, 
+                    birthday: birthday, email: email, area: area, total_points: 0
+                }, { onConflict: 'line_id' }).select().single();
+
+                if (error) throw error;
+                document.getElementById('profile-modal').style.display = 'none';
+                currentUserProfile = data;
+                renderApp(data, currentUserLineId);
+            } catch (err) {
+                showMsg('儲存失敗', `錯誤代碼：${err.code || 'Unknown'}`);
+                btn.disabled = false; btn.innerText = "確認加入";
+            }
+        }
+
+        function openEditModal() {
+            if (!currentUserProfile) return;
+            document.getElementById('edit-name').value = currentUserProfile.full_name;
+            document.getElementById('edit-phone').value = currentUserProfile.phone;
+            document.getElementById('edit-birthday').value = currentUserProfile.birthday;
+            document.getElementById('edit-area').value = currentUserProfile.area || "";
+            document.getElementById('edit-email').value = currentUserProfile.email || "";
+            document.getElementById('edit-modal').style.display = 'flex';
+        }
+
+        async function updateProfile() {
+            const btn = document.getElementById('btn-update');
+            const newArea = document.getElementById('edit-area').value;
+            const newEmail = document.getElementById('edit-email').value;
+            btn.disabled = true; btn.innerText = "更新中...";
+
+            try {
+                const { data, error } = await _supabase.from('profiles').update({ area: newArea, email: newEmail }).eq('line_id', currentUserLineId).select().single();
+                if (error) throw error;
+                currentUserProfile = data;
+                showMsg('成功', '資料已更新');
+                document.getElementById('edit-modal').style.display = 'none';
+            } catch (err) { showMsg('更新失敗', '請稍後再試'); } 
+            finally { btn.disabled = false; btn.innerText = "儲存變更"; }
+        }
+
+        function renderApp(data, lineId) {
+            document.getElementById('m-name').innerText = data.full_name;
+            document.getElementById('m-points').innerText = (data.total_points || 0).toLocaleString();
+            document.getElementById('m-phone').innerText = data.phone;
+            
+            new QRious({ element: document.getElementById('qr-code'), value: 'BBX-' + lineId, size: 200, level: 'M' });
+            
+            document.getElementById('loading-overlay').style.display = 'none';
+            document.getElementById('main-content').classList.remove('hidden');
+            
+            switchTab('card');
+            loadYearlyConsumption();
+        }
+
+        function renderActivityTab() {
+            const container = document.getElementById('activity-container');
+            if (ACTIVITY_URL && ACTIVITY_URL.trim() !== '') {
+                const targetUrl = new URL(ACTIVITY_URL);
+                if (currentUserLineId) targetUrl.searchParams.set('uid', currentUserLineId);
+                container.innerHTML = `<iframe src="${targetUrl.toString()}" class="w-full h-full border-0"></iframe>`;
+            } else {
+                container.innerHTML = `<div class="h-[60vh] flex flex-col items-center justify-center text-center p-6"><div class="w-20 h-20 bg-[#F2F4F6] rounded-[24px] flex items-center justify-center mb-6 shadow-sm"><svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-[#8B95A1]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg></div><h3 class="text-[22px] font-bold text-[#191F28] mb-2">小黑盒驚喜</h3><p class="text-[#8B95A1] text-[15px] font-medium leading-relaxed">更多專屬活動與最新消息<br>即將在此登場，敬請期待！</p></div>`;
+            }
+        }
+
+        async function loadYearlyConsumption() {
+            const currentYear = new Date().getFullYear();
+            const startDate = `${currentYear}-01-01T00:00:00.000Z`;
+            
+            try {
+                const { count, error } = await _supabase
+                    .from('point_logs')
+                    .select('*', { count: 'exact', head: true })
+                    .eq('line_id', currentUserLineId)
+                    .gte('created_at', startDate);
+                    
+                if (error) throw error;
+                
+                const times = count || 0;
+                document.getElementById('yearly-count').innerText = times;
+                
+                const MAX_TIMES = 15;
+                const percentage = Math.min(times / MAX_TIMES, 1);
+                const dashoffset = 251.3 - (251.3 * percentage);
+                
+                setTimeout(() => {
+                    document.getElementById('progress-arc').style.strokeDashoffset = dashoffset;
+                    if(times >= 3) document.getElementById('node-1').style.stroke = '#F7B500';
+                    if(times >= 6) document.getElementById('node-2').style.stroke = '#F7B500';
+                    if(times >= 10) document.getElementById('node-3').style.stroke = '#F7B500';
+                    if(times >= 15) document.getElementById('node-4').style.stroke = '#F7B500';
+                }, 300);
+            } catch (err) { console.error('載入失敗', err); }
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.getElementById('tab-' + tab).classList.add('active');
+            
+            const header = document.getElementById('main-header');
+            const pageTitle = document.getElementById('page-title');
+            const subtitle = document.getElementById('header-subtitle');
+            const btnBack = document.getElementById('btn-back');
+            const actions = document.getElementById('header-actions');
+
+            if (tab === 'card') {
+                pageTitle.innerText = '會員中心';
+                btnBack.classList.add('hidden');
+                subtitle.style.display = 'block';
+                actions.style.display = 'flex';
+                header.style.display = 'flex';
+                
+                header.classList.remove('pt-3', 'pb-2', 'min-h-[60px]');
+                header.classList.add('pt-7', 'pb-4', 'min-h-[80px]');
+            } 
+            else if (tab === 'coupon') {
+                pageTitle.innerText = '票券錢包';
+                btnBack.classList.remove('hidden');
+                subtitle.style.display = 'none';
+                actions.style.display = 'none';
+                header.style.display = 'flex';
+                
+                header.classList.remove('pt-7', 'pb-4', 'min-h-[80px]');
+                header.classList.add('pt-3', 'pb-2', 'min-h-[60px]');
+                
+                loadUserCoupons();
+            } 
+            else if (tab === 'blackbox') {
+                if (ACTIVITY_URL && ACTIVITY_URL.trim() !== '') {
+                    header.style.display = 'none';
+                } else {
+                    pageTitle.innerText = '小黑盒';
+                    btnBack.classList.remove('hidden');
+                    subtitle.style.display = 'none';
+                    actions.style.display = 'none';
+                    header.style.display = 'flex';
+                    
+                    header.classList.remove('pt-7', 'pb-4', 'min-h-[80px]');
+                    header.classList.add('pt-3', 'pb-2', 'min-h-[60px]');
+                }
+            }
+        }
+
+        async function loadUserCoupons() {
+            const list = document.getElementById('coupon-list');
+            const today = new Date().toISOString().split('T')[0];
+
+            const { data, error } = await _supabase
+                .from('user_coupons')
+                .select('*')
+                .eq('line_id', currentUserLineId)
+                .eq('status', 'unused')
+                .order('created_at', { ascending: false });
+
+            const emptyStateHTML = `
+                <div class="toss-card text-center py-8 mt-4">
+                    <p class="text-[#4E5968] font-bold text-[16px]">目前沒有可用的優惠券</p>
+                </div>`;
+
+            if (error || !data || data.length === 0) {
+                 list.innerHTML = emptyStateHTML;
+                return;
+            }
+
+            const validCoupons = data.filter(c => !c.valid_until || c.valid_until >= today);
+
+            if (validCoupons.length === 0) {
+                 list.innerHTML = emptyStateHTML;
+                return;
+            }
+
+            validCoupons.sort((a, b) => {
+                if (a.valid_until && b.valid_until) return new Date(a.valid_until) - new Date(b.valid_until);
+                if (a.valid_until && !b.valid_until) return -1;
+                if (!a.valid_until && b.valid_until) return 1;
+                return 0;
+            });
+
+            currentCoupons = validCoupons;
+
+            list.innerHTML = validCoupons.map(coupon => {
+                const dateText = coupon.valid_until ? `有效期限：${coupon.valid_until}` : '永久有效';
+                let actionText = ''; 
+
+                if (coupon.type === 'cash') {
+                    actionText = `該票券可折抵 ${coupon.discount_amount || 0} 元`;
+                } else {
+                    actionText = '憑券到門市進行兌換';
+                }
+
+                return `
+                <div class="bg-white rounded-[24px] p-5 shadow-[0_4px_24px_rgba(0,0,0,0.04)] flex items-center justify-between cursor-pointer active:scale-[0.98] transition-transform w-full box-border" onclick="openCouponDetail('${coupon.id}')">
+                    <div class="flex flex-col pr-4 items-start flex-1 min-w-0">
+                        <h4 class="text-[17px] font-bold text-[#191F28] mb-1 leading-tight w-full break-words">${coupon.coupon_name}</h4>
+                        <p class="text-[14px] text-[#8B95A1] mb-2 font-medium w-full break-words">${actionText}</p>
+                        <p class="text-[12px] text-[#B0B8C1] font-medium">${dateText}</p>
+                    </div>
+                    <div class="shrink-0 w-11 h-11 bg-[#F2F4F6] rounded-full flex items-center justify-center shadow-sm">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8B95A1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+    </script>
 </body>
 </html>
